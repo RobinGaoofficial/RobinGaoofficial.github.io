@@ -1,36 +1,19 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.title }} | Robin 的博客</title>
-  <style>
-    body {
-      max-width: 760px;
-      margin: 60px auto;
-      padding: 0 24px;
-      font-family: system-ui, sans-serif;
-      line-height: 1.8;
-      color: #263238;
-      background: #faf9f6;
-    }
+---
+layout: default
+---
+<div class="reading-wrap">
+<a class="back-link" href="{{ '/' | relative_url }}">← 返回首页</a>
+<article class="reading">
+<header class="post-header">
+<p class="eyebrow">NOTES & IDEAS</p>
+<h1>{{ page.title | escape }}</h1>
+<div class="meta">{% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>{% endif %}
+{% for category in page.categories %}<a class="tag" href="{{ '/categories.html' | relative_url }}#{{ category | uri_escape }}">{{ category | escape }}</a>{% endfor %}</div>
+</header>
+<div class="prose">{{ content }}</div>
+</article>
+<div class="post-navigation">
+{% if page.previous %}<a href="{{ page.previous.url | relative_url }}">← {{ page.previous.title | escape }}</a>{% endif %}
+{% if page.next %}<a href="{{ page.next.url | relative_url }}">{{ page.next.title | escape }} →</a>{% endif %}
+</div></div>
 
-    a {
-      color: #226655;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-  </style>
-</head>
-<body>
-  <a href="/">← 返回首页</a>
-
-  <article>
-    <h1>{{ page.title }}</h1>
-    {{ content }}
-  </article>
-</body>
-</html>
