@@ -1,5 +1,6 @@
 ---
 layout: post
+categories: [随笔]
 title: "我的第一篇随笔"
 permalink: /posts/my-first-note.html
 ---
@@ -14,3 +15,4 @@ permalink: /posts/my-first-note.html
 
 - 第一件事
 - 第二件事
+
