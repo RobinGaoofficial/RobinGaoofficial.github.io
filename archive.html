@@ -1,0 +1,11 @@
+---
+layout: default
+title: 文章归档
+---
+<div class="page-content"><header class="page-heading"><p class="eyebrow">ARCHIVE</p><h1>文章归档</h1><p class="muted">把一路上的发现，慢慢积累起来。</p></header>
+{% assign years = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+{% for year in years %}<section class="archive-group"><h2>{{ year.name }}</h2><ul class="archive-list">
+{% for post in year.items %}<li><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%m-%d" }}</time><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></li>{% endfor %}
+</ul></section>{% endfor %}
+<section class="archive-group"><h2>最初的 HTML 练习</h2><ul class="archive-list"><li><time datetime="2026-11-11">2026-11-11</time><a href="{{ '/posts/hello-world.html' | relative_url }}">你好，世界！</a></li></ul></section></div>
+
