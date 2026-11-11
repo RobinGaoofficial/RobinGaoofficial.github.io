@@ -1,5 +1,6 @@
 ---
 layout: post
+categories: [博客搭建]
 title: "我的博客搭建笔记"
 permalink: /posts/learning-to-blog.html
 ---
@@ -24,3 +25,4 @@ permalink: /posts/learning-to-blog.html
 > 活在想象之外。
 
 接下来，我想持续记录自己的学习过程。
+

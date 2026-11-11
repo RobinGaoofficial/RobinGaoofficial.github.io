@@ -1,0 +1,8 @@
+---
+layout: default
+title: 文章分类
+---
+<div class="page-content"><header class="page-heading"><p class="eyebrow">COLLECTIONS</p><h1>文章分类</h1><p class="muted">从一个感兴趣的话题开始。</p></header>
+<div class="category-links">{% for category in site.categories %}<a class="tag" href="#{{ category[0] | uri_escape }}">{{ category[0] | escape }} · {{ category[1].size }}</a>{% endfor %}</div>
+{% for category in site.categories %}<section class="archive-group" id="{{ category[0] | escape }}"><h2>{{ category[0] | escape }}</h2><ul class="archive-list">{% for post in category[1] %}<li><time>{{ post.date | date: "%Y-%m-%d" }}</time><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></li>{% endfor %}</ul></section>{% endfor %}</div>
+

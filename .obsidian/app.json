@@ -1,0 +1,7 @@
+{
+  "useMarkdownLinks": true,
+  "newLinkFormat": "relative",
+  "attachmentFolderPath": "assets/images",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "_drafts"
+}
