@@ -1,8 +1,10 @@
 ---
 layout: post
-categories: [随笔]
-title: "我的第一篇随笔"
+categories:
+  - 随笔
+title: 我的第一篇随笔
 permalink: /posts/my-first-note.html
+excerpt: 摘要37782634
 ---
 
 这里写文章的开头，也会作为首页摘要。
