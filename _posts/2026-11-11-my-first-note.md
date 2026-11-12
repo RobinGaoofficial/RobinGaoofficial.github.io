@@ -11,7 +11,7 @@ excerpt: 摘要37782634
 
 ## 今天的想法
 
-这里写正文。![](/assets/images/Pasted%20image%2020261112210827.png)
+这里写正文。![](/assets/images/Pasted%20image%2020261112210827-web-ef1f8ecb3e39.webp)
 
 ## 接下来想做的事
 
