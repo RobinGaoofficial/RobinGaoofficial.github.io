@@ -1,8 +1,10 @@
 ---
 layout: post
-categories: [博客搭建]
-title: "我的博客搭建笔记"
+categories:
+  - 博客搭建
+title: 我的博客搭建笔记
 permalink: /posts/learning-to-blog.html
+excerpt: 记录我从零搭建个人博客的过程，包括域名配置、网页设计，以及用 Obsidian 写作和发布文章的方法。
 ---
 
 今天，我开始学习用 Markdown 写博客。
