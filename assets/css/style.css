@@ -6,7 +6,7 @@
 .hero-art > .spark{display:none}
 .orbit-one::after{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:var(--blue);clip-path:polygon(50% 0%,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0% 50%,35% 35%);offset-path:ellipse(50% 50% at 50% 50%);offset-distance:0%;offset-anchor:center;offset-rotate:0deg}
 @keyframes star-orbit{from{offset-distance:0%}to{offset-distance:100%}}
-@media(prefers-reduced-motion:no-preference){.orbit-one::after{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:var(--blue);clip-path:polygon(50% 0%,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0% 50%,35% 35%);offset-path:ellipse(50% 50% at 50% 50%);offset-distance:0%;offset-anchor:center;offset-rotate:0deg}.hero-art:hover .orbit-one::after{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:var(--blue);clip-path:polygon(50% 0%,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%,0% 50%,35% 35%);offset-path:ellipse(50% 50% at 50% 50%);offset-distance:0%;offset-anchor:center;offset-rotate:0deg}}
+@media(prefers-reduced-motion:no-preference){.orbit-one::after{animation:star-orbit 12s linear infinite}.hero-art:hover .orbit-one::after{animation-play-state:paused}}
 /* Gentle orbital motion; hover to pause. */
 @keyframes planet-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 @keyframes orbit-clockwise{from{transform:rotate(-27deg)}to{transform:rotate(333deg)}}
