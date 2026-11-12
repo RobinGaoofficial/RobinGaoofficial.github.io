@@ -22,7 +22,7 @@ permalink: /posts/learning-to-blog.html
 
 **Markdown**：用简单的符号编写文章。
 
-> 活在想象之外。
+> 活在想象之外
 
 接下来，我想持续记录自己的学习过程。
 
