@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
 <meta name="description" content="{{ page.description | default: site.description | escape }}">
+<script src="{{ '/assets/js/theme.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+<link rel="stylesheet" href="{{ '/assets/css/reading.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 </head>
@@ -13,14 +15,17 @@
 <a class="skip" href="#content">跳到正文</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="{{ '/' | relative_url }}"><span class="brand-mark">R.</span><span>高彬斌的博客</span></a>
-<nav aria-label="主导航">
+<div class="header-actions"><nav aria-label="主导航">
 <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}>首页</a>
 <a href="{{ '/archive.html' | relative_url }}" {% if page.url == '/archive.html' %}aria-current="page"{% endif %}>归档</a>
 <a href="{{ '/categories.html' | relative_url }}" {% if page.url == '/categories.html' %}aria-current="page"{% endif %}>分类</a>
 <a href="{{ '/about.html' | relative_url }}" {% if page.url == '/about.html' %}aria-current="page"{% endif %}>关于</a>
-</nav></div></header>
+</nav>
+<select id="theme-select" class="theme-select" aria-label="配色主题" hidden><option value="system">跟随系统</option><option value="light">浅色模式</option><option value="dark">深色模式</option></select>
+</div></div></header>
 <main id="content" class="site-main">{{ content }}</main>
 <footer class="site-footer"><span>© 高彬斌</span><span>活在想象之外</span><span aria-hidden="true"></span></footer>
+<script src="{{ '/assets/js/reading.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>
 
