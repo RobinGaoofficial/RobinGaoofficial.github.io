@@ -8,7 +8,7 @@ excerpt: 记录我从零搭建个人博客的过程，包括域名配置、网�
 ---
 
 今天，我开始学习用 Markdown 写博客。
-
+![](/assets/images/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0-01.png)
 ## 我已经完成了什么
 
 - 创建 GitHub 仓库
