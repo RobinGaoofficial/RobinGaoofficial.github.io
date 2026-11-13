@@ -8,14 +8,14 @@ excerpt: 记录我从零搭建个人博客的过程，包括域名配置、网�
 ---
 
 今天，我开始学习用 Markdown 写博客。
-![](/assets/images/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0-01.png)
+<img src="/assets/images/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0-01.png" alt="" style="display:block;width:44%;max-width:100%;height:auto;margin:16px auto 16px 0;" data-blog-layout="true" data-blog-align="left">
 ## 我已经完成了什么
 
 - 创建 GitHub 仓库
 - 开启 GitHub Pages
 - 制作首页和文章页面
 - 创建可复用的文章模板
-![](/assets/images/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0-01-web.webp)
+<img src="/assets/images/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0-01-web.webp" alt="" style="display:block;width:50%;max-width:100%;height:auto;margin:16px 0 16px auto;" data-blog-layout="true" data-blog-align="right">
 ## 今天理解的三个概念
 
 **HTML**：描述网页的结构。
