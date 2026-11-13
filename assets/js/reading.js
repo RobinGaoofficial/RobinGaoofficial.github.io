@@ -114,6 +114,10 @@
     if (img.dataset.blogLayout === 'true') {
       button.style.width = img.style.width;
       button.style.margin = img.style.margin;
+      button.style.cssFloat = img.style.cssFloat;
+      button.dataset.blogWrap = img.dataset.blogWrap || 'false';
+      img.style.cssFloat = 'none';
+      img.dataset.blogWrapped = 'true';
       img.style.width = '100%';
       img.style.margin = '0';
     }
