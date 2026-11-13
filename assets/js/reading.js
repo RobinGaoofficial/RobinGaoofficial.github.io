@@ -111,6 +111,12 @@
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'image-zoom-trigger';
+    if (img.dataset.blogLayout === 'true') {
+      button.style.width = img.style.width;
+      button.style.margin = img.style.margin;
+      img.style.width = '100%';
+      img.style.margin = '0';
+    }
     button.setAttribute('aria-label', '放大图片' + (img.alt ? '：' + img.alt : ''));
     img.before(button);
     button.append(img);
