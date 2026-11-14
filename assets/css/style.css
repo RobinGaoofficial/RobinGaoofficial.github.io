@@ -19,4 +19,5 @@
 .spark{animation:star-glow 4s ease-in-out infinite}
 .hero-art:hover .orb,.hero-art:hover .orbit,.hero-art:hover .spark{animation-play-state:paused}
 }
+.search-bar select,.search-bar button{font:inherit;font-size:14px;max-width:100%;background:white;border:1px solid var(--line);border-radius:7px;padding:10px 14px;color:var(--ink)}.search-bar input[type="date"]{width:154px}.search-bar button,.pagination button{cursor:pointer}.search-bar button:hover,.pagination button:hover{border-color:#88adf1}.pagination{display:flex;justify-content:center;align-items:center;gap:14px;margin:30px 0 65px}.pagination button{font:inherit;font-size:14px;background:white;border:1px solid var(--line);border-radius:7px;padding:9px 14px;color:var(--ink)}.pagination button:disabled{cursor:not-allowed;opacity:.55}
 
