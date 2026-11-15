@@ -1,2 +1,6 @@
 minimumReleaseAgeExclude:
   - '@waline/vercel@1.43.7'
+# Neon uses PostgreSQL; SQLite native builds and core-js notices are unnecessary.
+allowBuilds:
+  better-sqlite3: false
+  core-js-pure: false
