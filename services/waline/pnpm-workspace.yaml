@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@waline/vercel@1.43.7'

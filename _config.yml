@@ -1,6 +1,6 @@
 title: 高彬斌的博客
 description: 记录学习、思考，以及探索新事物的经历。活在想象之外
-url: https://robingaoofficial.github.io
+url: https://gaobinbin.dev
 baseurl: ""
 lang: zh-CN
 timezone: Asia/Shanghai
@@ -9,6 +9,9 @@ kramdown:
   input: GFM
   hard_wrap: true
 permalink: /posts/:title.html
+waline:
+  # Set only after the server/database and owner account are ready.
+  server_url: ""
 defaults:
   - scope:
       path: ""
@@ -23,6 +26,8 @@ exclude:
   - tests
   - package.json
   - package-lock.json
+  - pnpm-lock.yaml
+  - services
   - node_modules
   - Gemfile
   - Gemfile.lock

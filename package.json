@@ -1,6 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "vendor:waline": "node tools/sync-waline.cjs"
+  },
+  "dependencies": {
+    "@waline/client": "3.16.2"
+  },
+  "devDependencies": {
+    "liquidjs": "10.30.1"
   }
 }

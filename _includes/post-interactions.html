@@ -1,0 +1,26 @@
+<section class="post-interactions" data-post-interactions data-url="{{ page.url | absolute_url | escape }}" data-title="{{ page.title | escape }}" data-server-url="{{ site.waline.server_url | default: '' | escape }}" data-client-module="{{ '/assets/vendor/waline/waline.js' | relative_url }}?v=3.16.2" aria-label="文章互动">
+  <div class="article-actions">
+    {% if site.waline.server_url and site.waline.server_url != '' %}
+    <button class="article-action" type="button" data-like aria-pressed="false" disabled>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+      <span data-like-label>点赞</span><span data-like-count>—</span>
+    </button>
+    {% endif %}
+    <button class="article-action" type="button" data-share hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M5 13v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></svg>
+      分享文章
+    </button>
+    {% if site.waline.server_url and site.waline.server_url != '' %}<a class="article-action" href="#comments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5A8.5 8.5 0 0 1 10.5 3h2a8.5 8.5 0 0 1 8.5 8.5Z"/></svg>写评论</a>{% endif %}
+  </div>
+  <p class="interaction-status" data-share-status role="status" aria-live="polite"></p>
+  <input class="share-link" data-share-link aria-label="文章分享链接" readonly hidden>
+  {% if site.waline.server_url and site.waline.server_url != '' %}
+  <section id="comments" class="article-comments" aria-labelledby="comments-heading">
+    <h2 id="comments-heading">一起聊聊</h2>
+    <p class="comments-intro">欢迎分享你的想法。注册或登录后即可评论，邮箱不会公开。</p>
+    <div class="service-message"><p class="interaction-status" data-service-status role="status"></p><button class="article-action" data-service-retry type="button" hidden>重新连接</button></div>
+    <div data-comments></div>
+    <noscript><p class="comments-intro">启用 JavaScript 后即可查看评论和参与讨论。</p></noscript>
+  </section>
+  {% endif %}
+</section>

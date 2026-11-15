@@ -5,4 +5,8 @@ node_modules/
 .obsidian/workspace*.json
 .obsidian/cache/
 .DS_Store
+.env
+.env.*
+!.env.example
+.vercel/
 
