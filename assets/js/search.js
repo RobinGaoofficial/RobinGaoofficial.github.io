@@ -15,6 +15,12 @@
   const status = document.querySelector('#search-status');
   const empty = document.querySelector('#empty-state');
   const pagination = document.querySelector('#pagination');
+  const monthMode = document.querySelector('#mode-month');
+  const rangeMode = document.querySelector('#mode-range');
+  const monthField = document.querySelector('#month-field');
+  const rangeFields = document.querySelector('#range-fields');
+  const dateError = document.querySelector('#date-error');
+  const grid = document.querySelector('.post-grid');
   const posts = cards.map((card, index) => ({ card, index, text: card.dataset.search, title: card.dataset.title, category: card.dataset.category, date: card.dataset.date }));
   const pageSize = 6;
   let page = 1;
@@ -30,6 +36,18 @@
 
   addOptions(category, [...new Set(posts.map(post => post.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'zh-CN')));
   addOptions(month, [...new Set(posts.map(post => post.date.slice(0, 7)).filter(Boolean))].sort().reverse());
+  const widgets = window.FilterControls ? [
+    ...[category, month, sort].map(window.FilterControls.enhanceSelect),
+    window.FilterControls.enhanceDates([from, to])
+  ] : [];
+
+  function setTimeMode(range) {
+    monthMode.setAttribute('aria-pressed', String(!range));
+    rangeMode.setAttribute('aria-pressed', String(range));
+    monthField.hidden = range;
+    rangeFields.hidden = !range;
+    widgets.forEach(widget => widget.close());
+  }
 
   function filters() {
     return window.PostBrowser.normalizeFilters({ keyword: input.value, category: category.value, month: month.value, from: from.value, to: to.value, sort: sort.value });
@@ -38,6 +56,7 @@
   function setExpanded(expanded) {
     panel.hidden = !expanded;
     toggle.setAttribute('aria-expanded', String(expanded));
+    if (!expanded) widgets.forEach(widget => widget.close());
   }
 
   function restoreFilters(criteria) {
@@ -47,18 +66,22 @@
     from.value = criteria.from;
     to.value = criteria.to;
     sort.value = criteria.sort;
+    setTimeMode(Boolean(criteria.from || criteria.to));
   }
 
   function syncUrl(criteria) {
     const search = window.PostBrowser.filtersToSearch(criteria);
-    window.history.replaceState(null, '', `${search}${window.location.hash}`);
+    const url = new URL(window.location.href);
+    ['q', 'category', 'month', 'from', 'to', 'sort'].forEach(key => url.searchParams.delete(key));
+    new URLSearchParams(search).forEach((value, key) => url.searchParams.set(key, value));
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
   }
 
   function updateFilterSummary(criteria) {
     const active = window.PostBrowser.activeFilterCount(criteria);
     count.hidden = active === 0;
     count.textContent = active ? String(active) : '';
-    clear.disabled = active === 0 && criteria.sort === 'newest';
+    clear.hidden = active === 0 && criteria.sort === 'newest' && !from.value && !to.value;
   }
 
   function renderPagination(totalPages) {
@@ -87,12 +110,16 @@
     page = paged.page;
     const visible = new Set(paged.items.map(post => post.card));
     cards.forEach(card => { card.hidden = !visible.has(card); });
+    // DOM order must match the sorted results, not just their visibility.
+    results.forEach(post => grid.append(post.card));
     const hasConditions = window.PostBrowser.activeFilterCount(criteria) > 0 || criteria.sort !== 'newest';
     status.hidden = !hasConditions;
     status.textContent = hasConditions ? `找到 ${results.length} 篇文章${results.length ? `，第 ${page} / ${paged.totalPages} 页` : ''}` : '';
     empty.hidden = results.length !== 0;
     renderPagination(paged.totalPages);
     updateFilterSummary(criteria);
+    dateError.hidden = !(from.value && to.value && from.value > to.value);
+    widgets.forEach(widget => widget.sync());
     if (updateUrl) syncUrl(criteria);
   }
 
@@ -102,6 +129,7 @@
   }
 
   input.addEventListener('focus', () => setExpanded(true));
+  input.addEventListener('click', () => setExpanded(true));
   input.addEventListener('input', changed);
   toggle.addEventListener('click', () => setExpanded(panel.hidden));
   category.addEventListener('change', changed);
@@ -117,6 +145,17 @@
     changed();
   }));
   sort.addEventListener('change', changed);
+  monthMode.addEventListener('click', () => {
+    from.value = '';
+    to.value = '';
+    setTimeMode(false);
+    changed();
+  });
+  rangeMode.addEventListener('click', () => {
+    month.value = '';
+    setTimeMode(true);
+    changed();
+  });
   clear.addEventListener('click', () => {
     input.value = '';
     category.value = '';
@@ -124,6 +163,7 @@
     from.value = '';
     to.value = '';
     sort.value = 'newest';
+    setTimeMode(false);
     page = 1;
     render();
   });

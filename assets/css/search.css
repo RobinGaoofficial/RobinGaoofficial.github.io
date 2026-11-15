@@ -1,0 +1,62 @@
+/* Reader controls share the site's light/dark palette. */
+.search-bar { display: block; margin: 26px 0; }
+.search-row { display: flex; align-items: center; gap: 10px; max-width: 580px; }
+.search-row #search { width: 100%; min-width: 0; flex: 1; min-height: 46px; font-size: 16px; }
+.search-row #search::placeholder { color: var(--muted); opacity: 1; }
+.search-bar button, .filter-calendar button { -webkit-tap-highlight-color: transparent; }
+.search-bar .filter-toggle { flex: none; min-height: 46px; color: var(--muted); background: var(--surface); padding: 10px 15px; }
+.search-bar .filter-toggle[aria-expanded=true] { border-color: var(--blue); background: var(--soft); }
+.filter-toggle span { background: var(--button); }
+.search-bar .clear-filters { flex: none; width: auto; margin: 0; padding: 8px 4px; border: 0; color: var(--blue); background: transparent; }
+.search-bar .filter-panel { margin-top: 14px; padding: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.filter-panel .filter-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 20px 24px; max-width: 760px; }
+.filter-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.filter-panel .filter-field label, .time-filter legend { align-self: flex-start; font-size: 13px; color: var(--muted); }
+.time-filter { grid-column: 1 / -1; border: 0; padding: 0; margin: 0; min-width: 0; }
+.time-filter legend { margin-bottom: 8px; padding: 0; }
+.time-mode { display: inline-flex; gap: 4px; background: var(--paper); border: 1px solid var(--line); padding: 4px; border-radius: 8px; margin-bottom: 14px; }
+.search-bar .time-mode button { border: 0; padding: 6px 16px; min-height: 34px; background: transparent; color: var(--muted); border-radius: 5px; }
+.search-bar .time-mode button[aria-pressed=true] { background: var(--soft); color: var(--blue); }
+.date-range { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+#month-field { max-width: 368px; }
+.filter-select { position: relative; min-width: 0; }
+.search-bar .filter-control { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 46px; margin: 0; padding: 10px 13px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; text-align: left; font-size: 15px; line-height: 1.5; }
+.filter-control::after { content: ''; flex: none; width: 6px; height: 6px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); margin: -3px 3px 0 0; }
+.search-bar .filter-control[aria-expanded=true] { border-color: var(--blue); }
+.filter-options { position: absolute; z-index: 5; top: calc(100% + 6px); left: 0; right: 0; padding: 5px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 26px #142c501c; max-height: 240px; overflow: auto; }
+.search-bar .filter-option { display: flex; justify-content: space-between; align-items: center; width: 100%; border: 0; border-radius: 6px; padding: 11px 12px; min-height: 44px; background: transparent; color: var(--ink); text-align: left; }
+.search-bar .filter-option:hover, .search-bar .filter-option:focus-visible, .search-bar .filter-option[aria-selected=true] { background: var(--soft); color: var(--blue); }
+.search-bar .filter-option:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+.filter-option[aria-selected=true]::after { content: '✓'; margin-left: 10px; }
+.search-bar .filter-error { color: var(--muted); font-size: 13px; margin: 12px 0 0; }
+#search-status { display: block; margin-top: 12px; }
+.filter-calendar { width: min(360px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); box-shadow: 0 20px 70px #142c5033; }
+.filter-calendar::backdrop { background: #0d162665; }
+.calendar-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.calendar-heading h2 { font-size: 17px; margin: 0; font-weight: 600; }
+.filter-calendar button { border: 0; border-radius: 7px; min-height: 40px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
+.filter-calendar button:hover { background: var(--soft); color: var(--blue); }
+.filter-calendar .calendar-close { color: var(--muted); font-size: 24px; width: 40px; }
+.calendar-month { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.calendar-month strong { font-size: 15px; font-weight: 500; }
+.calendar-month button { width: 40px; font-size: 24px; color: var(--blue); }
+.calendar-week, .calendar-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; gap: 3px; }
+.calendar-week { margin-bottom: 8px; font-size: 12px; color: var(--muted); }
+.calendar-days button { font-size: 14px; padding: 0; }
+.calendar-days button[aria-pressed=true] { background: var(--button); color: #fff; }
+.calendar-footer { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 16px; }
+.calendar-footer button { padding: 6px 10px; font-size: 13px; color: var(--blue); }
+.pagination button { background: var(--surface); }
+@media (max-width: 700px) {
+  .search-row { max-width: none; gap: 8px; }
+  .search-bar .filter-toggle { padding: 10px 12px; }
+  .search-bar .filter-panel { padding: 18px 16px; }
+  .filter-panel .filter-fields { gap: 18px 12px; }
+  .date-range { gap: 10px; }
+  #month-field { max-width: none; }
+  .search-bar .filter-control { font-size: 14px; padding: 10px; }
+  .filter-fields .clear-filters { width: auto; }
+}
+@media (max-width: 360px) {
+  .filter-panel .filter-fields, .date-range { grid-template-columns: minmax(0, 1fr); }
+}

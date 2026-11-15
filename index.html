@@ -7,7 +7,34 @@ layout: default
 </section>
 <section id="notes" class="notes-section">
 <div class="section-heading"><div><p class="eyebrow">THE LATEST</p><h2>最近的记录<span class="count">{{ site.posts.size | plus: 1 }}</span></h2></div><a href="{{ '/archive.html' | relative_url }}">全部归档 ↗</a></div>
-<div class="search-bar" role="search"><label class="sr-only" for="search">搜索文章</label><input id="search" type="search" placeholder="输入标题或正文关键词…" autocomplete="off"><button id="filters-toggle" class="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-panel">筛选 <span id="filter-count" hidden></span></button><div id="filter-panel" class="filter-panel" hidden><div class="filter-fields"><label for="category-filter">分类</label><select id="category-filter"><option value="">全部分类</option></select><label for="month-filter">月份</label><select id="month-filter"><option value="">全部月份</option></select><span class="filter-label">日期范围</span><input id="date-from" type="date" aria-label="起始日期"><span aria-hidden="true">至</span><input id="date-to" type="date" aria-label="结束日期"><label for="sort-filter">排序</label><select id="sort-filter"><option value="newest">最新优先</option><option value="oldest">最早优先</option><option value="title">标题排序</option></select><button id="clear-filters" class="clear-filters" type="button">清除条件</button></div></div><span id="search-status" role="status" aria-live="polite"></span></div>
+<div class="search-bar" role="search" aria-label="文章搜索与筛选">
+  <div class="search-row">
+    <label class="sr-only" for="search">搜索文章</label>
+    <input id="search" type="search" placeholder="输入标题或正文关键词…" autocomplete="off">
+    <button id="filters-toggle" class="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-panel">筛选 <span id="filter-count" hidden></span></button>
+    <button id="clear-filters" class="clear-filters" type="button" hidden>清除</button>
+  </div>
+  <div id="filter-panel" class="filter-panel" hidden>
+    <div class="filter-fields">
+      <div class="filter-field"><label for="category-filter">分类</label><select id="category-filter"><option value="">全部分类</option></select></div>
+      <div class="filter-field"><label for="sort-filter">排序</label><select id="sort-filter"><option value="newest">最新优先</option><option value="oldest">最早优先</option><option value="title">标题排序</option></select></div>
+      <fieldset class="time-filter">
+        <legend>时间</legend>
+        <div class="time-mode" role="group" aria-label="时间筛选方式">
+          <button type="button" id="mode-month" aria-pressed="true">按月份</button>
+          <button type="button" id="mode-range" aria-pressed="false">日期范围</button>
+        </div>
+        <div id="month-field" class="filter-field"><label class="sr-only" for="month-filter">月份</label><select id="month-filter"><option value="">全部月份</option></select></div>
+        <div id="range-fields" class="date-range" hidden>
+          <div class="filter-field"><label for="date-from">开始日期</label><input id="date-from" type="date" aria-describedby="date-error"></div>
+          <div class="filter-field"><label for="date-to">结束日期</label><input id="date-to" type="date" aria-describedby="date-error"></div>
+        </div>
+        <p id="date-error" class="filter-error" role="status" hidden>开始日期不能晚于结束日期，请调整日期范围。</p>
+      </fieldset>
+    </div>
+  </div>
+  <span id="search-status" role="status" aria-live="polite" hidden></span>
+</div>
 <noscript><p class="muted">搜索需要启用 JavaScript；你仍可以阅读下方全部文章。</p></noscript>
 <div class="post-grid">
 {% for post in site.posts %}
@@ -26,5 +53,6 @@ layout: default
 </section>
 <nav id="pagination" class="pagination" aria-label="文章分页" hidden></nav>
 <script src="{{ '/assets/js/post-browser.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
-<script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/filter-controls.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/assets/js/search.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 
