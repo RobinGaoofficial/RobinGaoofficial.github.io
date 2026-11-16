@@ -11,7 +11,7 @@ kramdown:
 permalink: /posts/:title.html
 waline:
   # Set only after the server/database and owner account are ready.
-  server_url: ""
+  server_url: "https://robin-blog-comments.vercel.app"
 defaults:
   - scope:
       path: ""

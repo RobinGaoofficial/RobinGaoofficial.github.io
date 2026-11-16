@@ -13,6 +13,8 @@
 
 ## 部署到已同意的免费托管
 
+当前服务项目为 `robin-blog-comments`（Vercel Hobby），正式地址为 `https://robin-blog-comments.vercel.app`。专用数据库 `robin-blog-comments-db` 使用 Neon Free，位于 iad1；连接变量只提供给 Production。Neon Auth 和 Realtime 未启用，账号由 Waline 管理。博主账号已核实为管理员，博客已配置此服务地址。后台的 LeanCloud 停服公告针对使用 LeanCloud 存储的站点，本项目使用 Neon，无需因此迁移。
+
 1. 登录 Vercel，导入**现有** `RobinGaoofficial/RobinGaoofficial.github.io` 仓库，新建评论服务项目，Root Directory 选 `services/waline`，Node.js 24，Framework Preset 选 Other。博客页面继续由 GitHub Pages 发布。只选 Hobby，不升级收费套餐。
 2. Vercel Storage 创建 Neon Free 数据库并连接评论项目。在新的空数据库运行 `services/waline/waline.pgsql`，不要对已有数据库重复执行建表脚本。数据库密码仅留在服务端环境变量。
 3. 按 `.env.example` 设置 `SERVER_URL` 和 `SECURE_DOMAINS`，后者同时包含博客域名及真实服务域名；可先使用 Vercel 分配的域名，之后再绑定 `comments.gaobinbin.dev`。不要让预览页面写入生产数据库。
@@ -24,6 +26,12 @@
 服务端源码固定登录和即时显示规则，客户端资源固定为 Waline 3.16.2 并由博客自身域名提供。后端固定为 `@waline/vercel` 1.43.7。服务端不在 Jekyll 输出中。
 
 ## 验证与维护
+
+服务端通过 `packageManager` 固定 pnpm 11.25.0，避免 Vercel 自动选择 pnpm 9 后无法读取工作区配置。`pnpm-workspace.yaml` 明确跳过未使用的 SQLite 构建和 core-js 安装提示脚本；Neon 使用 PostgreSQL。
+
+依赖采用 `nodeLinker: hoisted`，确保 Waline 的 Vercel `includeFiles` 能收录动态加载的 MathJax 字体。首次从隔离布局切换时，重新部署需取消 Use existing Build Cache，避免旧依赖目录冲突。
+
+Vercel 内置 Query 编辑器仅接受单条 SQL。首次初始化空库时，可将 `waline.pgsql` 的建表语句放在 `DO $waline$ BEGIN ... END $waline$;` 中一次执行。执行前查询 `information_schema.tables` 确认空库，完成后恢复 Read-only 并核对 `wl_comment`、`wl_counter`、`wl_users`；不要对已有表重复初始化。
 
 ```powershell
 pnpm install --frozen-lockfile
