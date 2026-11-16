@@ -1,5 +1,7 @@
 minimumReleaseAgeExclude:
   - '@waline/vercel@1.43.7'
+# Match Waline's Vercel includeFiles paths for dynamically loaded font assets.
+nodeLinker: hoisted
 # Neon uses PostgreSQL; SQLite native builds and core-js notices are unnecessary.
 allowBuilds:
   better-sqlite3: false
