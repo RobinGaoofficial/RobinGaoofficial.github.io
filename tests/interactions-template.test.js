@@ -2,6 +2,19 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { renderPost } = require('../tools/render-interactions.cjs');
 
+test('adjacent article links follow the newest-first listing and keep their side at an endpoint', async () => {
+  const newer = {title:'测试8',url:'/posts/8.html'};
+  const older = {title:'rger',url:'/posts/rger.html'};
+  const html = await renderPost({next:newer,previous:older});
+  assert.match(html, /class="post-newer" href="\/posts\/8.html">← 测试8/);
+  assert.match(html, /class="post-older" href="\/posts\/rger.html">rger →/);
+  assert.ok(html.indexOf('← 测试8') < html.indexOf('rger →'));
+  const endpoint = await renderPost({previous:older});
+  assert.doesNotMatch(endpoint, /class="post-newer"/);
+  assert.match(endpoint, /class="post-older"/);
+  assert.match(html, /mailto:contact@gaobinbin.dev/);
+});
+
 test('about pages keep their content without article interactions or their assets', async () => {
   const html = await renderPost({ serverURL: 'https://comments.example.com', collection: null, url: '/about.html', content: '<p>我的个人介绍</p>' });
   assert.match(html, /我的个人介绍/);

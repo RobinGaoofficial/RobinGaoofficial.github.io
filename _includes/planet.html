@@ -1,0 +1,20 @@
+<div class="planet-art" aria-hidden="true">
+<svg viewBox="0 0 480 440" xmlns="http://www.w3.org/2000/svg" focusable="false">
+  <defs>
+    <radialGradient id="planet-shading" cx="30%" cy="25%" r="80%"><stop stop-color="#acc9ff"/><stop offset=".55" stop-color="#6389e5"/><stop offset="1" stop-color="#3e55ad"/></radialGradient>
+    <clipPath id="orbit-far"><rect x="-210" y="-210" width="420" height="210"/></clipPath>
+    <clipPath id="orbit-near"><rect x="-210" y="0" width="420" height="210"/></clipPath>
+    <g id="planet-ring-one"><ellipse rx="190" ry="75"/><path class="planet-satellite" d="M0 -13 4 -4 13 0 4 4 0 13 -4 4 -13 0 -4 -4Z"/></g>
+    <g id="planet-ring-two"><ellipse rx="180" ry="90"/></g>
+  </defs>
+  <g transform="translate(240 205)">
+    <!-- Both halves share a rotation; the opaque sphere occludes the far halves. -->
+    <g class="planet-ring ring-one"><g clip-path="url(#orbit-far)"><use href="#planet-ring-one"/></g></g>
+    <g class="planet-ring ring-two"><g clip-path="url(#orbit-far)"><use href="#planet-ring-two"/></g></g>
+    <circle class="planet-body" r="90" fill="url(#planet-shading)"/>
+    <g class="planet-ring ring-one"><g clip-path="url(#orbit-near)"><use href="#planet-ring-one"/></g></g>
+    <g class="planet-ring ring-two"><g clip-path="url(#orbit-near)"><use href="#planet-ring-two"/></g></g>
+  </g>
+  <text class="planet-caption" x="240" y="425" text-anchor="middle">LEARN · THINK · EXPLORE</text>
+</svg>
+</div>

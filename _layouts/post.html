@@ -14,8 +14,8 @@ layout: default
 <div class="prose">{{ content }}</div>
 {% if page.collection == 'posts' %}{% include post-interactions.html %}{% endif %}
 </article>
-<div class="post-navigation">
-{% if page.previous %}<a href="{{ page.previous.url | relative_url }}">← {{ page.previous.title | escape }}</a>{% endif %}
-{% if page.next %}<a href="{{ page.next.url | relative_url }}">{{ page.next.title | escape }} →</a>{% endif %}
-</div></div>
+<nav class="post-navigation" aria-label="相邻文章">
+{% if page.next %}<a class="post-newer" href="{{ page.next.url | relative_url }}">← {{ page.next.title | escape }}</a>{% endif %}
+{% if page.previous %}<a class="post-older" href="{{ page.previous.url | relative_url }}">{{ page.previous.title | escape }} →</a>{% endif %}
+</nav></div>
 

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 <link rel="stylesheet" href="{{ '/assets/css/reading.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 {% if page.url == '/' %}<link rel="stylesheet" href="{{ '/assets/css/search.css' | relative_url }}?v={{ site.time | date: '%s' }}">{% endif %}
+{% if page.url == '/' %}<link rel="stylesheet" href="{{ '/assets/css/planet.css' | relative_url }}?v={{ site.time | date: '%s' }}">{% endif %}
 <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 {% if page.layout == 'post' and page.collection == 'posts' %}
@@ -30,7 +31,7 @@
 <select id="theme-select" class="theme-select" aria-label="配色主题" hidden><option value="system">跟随系统</option><option value="light">浅色模式</option><option value="dark">深色模式</option></select>
 </div></div></header>
 <main id="content" class="site-main">{{ content }}</main>
-<footer class="site-footer"><span>© 高彬斌</span><span>活在想象之外</span><span aria-hidden="true"></span></footer>
+<footer class="site-footer"><span class="footer-copyright">© 高彬斌</span><span class="footer-motto">活在想象之外</span><a class="footer-contact" href="mailto:contact@gaobinbin.dev">联系与支持 · contact@gaobinbin.dev</a></footer>
 <script src="{{ '/assets/js/reading.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+.planet-art{width:100%;max-width:480px;justify-self:center;overflow:visible;background:radial-gradient(ellipse,#dde9ff80,transparent 65%)}
+.planet-art svg{display:block;width:100%;height:auto;overflow:visible}
+.planet-body{filter:drop-shadow(14px 20px 22px #4c72b62b)}
+.planet-ring{transform-origin:0 0;fill:none;stroke:#91afe5;stroke-width:1.15}
+.ring-one{transform:rotate(-18deg)}
+.ring-two{transform:rotate(48deg);stroke:#bdcef0}
+.planet-satellite{fill:var(--blue);stroke:none;offset-path:path('M190 0 A190 75 0 1 1 -190 0 A190 75 0 1 1 190 0');offset-rotate:0deg;offset-distance:12%}
+.planet-caption{font:9px monospace;letter-spacing:3px;fill:var(--muted)}
+@keyframes planet-ring-one{to{transform:rotate(342deg)}}
+@keyframes planet-ring-two{to{transform:rotate(-312deg)}}
+@keyframes planet-satellite{to{offset-distance:112%}}
+@media(prefers-reduced-motion:no-preference){
+  .ring-one{animation:planet-ring-one 32s linear infinite}
+  .ring-two{animation:planet-ring-two 44s linear infinite}
+  .planet-satellite{animation:planet-satellite 12s linear infinite}
+  .planet-art:hover .planet-ring,.planet-art:hover .planet-satellite{animation-play-state:paused}
+}
+:root[data-theme=dark] .planet-art{background:radial-gradient(ellipse,#19396080,transparent 65%)}
+:root[data-theme=dark] .planet-ring{stroke:#6489bc}
+:root[data-theme=dark] .ring-two{stroke:#425d80}
+@media(max-width:700px){.planet-art{display:none}}
