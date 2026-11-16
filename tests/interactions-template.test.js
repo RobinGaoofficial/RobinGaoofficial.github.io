@@ -2,6 +2,12 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { renderPost } = require('../tools/render-interactions.cjs');
 
+test('about pages keep their content without article interactions or their assets', async () => {
+  const html = await renderPost({ serverURL: 'https://comments.example.com', collection: null, url: '/about.html', content: '<p>我的个人介绍</p>' });
+  assert.match(html, /我的个人介绍/);
+  assert.doesNotMatch(html, /data-view-count|data-post-interactions|data-comments|assets\/js\/interactions|assets\/css\/interactions|vendor\/waline/);
+});
+
 test('posts without a configured backend offer sharing without fabricated counts or login controls', async () => {
   const html = await renderPost();
   assert.match(html, /data-share /);

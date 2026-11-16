@@ -149,7 +149,7 @@
           lang: 'zh-CN', login: 'force', dark: 'html[data-theme="dark"]',
           pageview: false, comment: false, reaction: false, pageSize: 10,
           emoji: false, search: false, imageUploader: false, texRenderer: false,
-          noRss: true, commentSorting: 'latest',
+          noRss: true, noCopyright: true, commentSorting: 'latest',
           locale: { placeholder: '写下你的想法，和我聊聊这篇文章…', sofa: '还没有评论，欢迎来聊聊。', login: '登录 / 注册' }
         });
         const results = await Promise.allSettled([counters.view(), counters.read()]);

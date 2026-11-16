@@ -8,9 +8,9 @@ engine.registerFilter('absolute_url', value => new URL(value, 'https://gaobinbin
 engine.registerFilter('date_to_xmlschema', value => new Date(value).toISOString());
 engine.registerFilter('uri_escape', encodeURIComponent);
 
-async function renderPost({ serverURL = '', title = '保持好奇，记录与分享', content = '<p>这里是文章正文。</p>' } = {}) {
+async function renderPost({ serverURL = '', title = '保持好奇，记录与分享', content = '<p>这里是文章正文。</p>', collection = 'posts', url = '/posts/interaction-preview.html' } = {}) {
   const context = {
-    page: { title, layout: 'post', url: '/posts/interaction-preview.html', date: '2026-11-15', categories: ['随笔'] },
+    page: { title, layout: 'post', collection, url, date: '2026-11-15', categories: ['随笔'] },
     site: { title: '高彬斌的博客', description: '记录学习、思考，以及探索新事物的经历。', time: new Date(), waline: { server_url: serverURL } },
     content
   };
