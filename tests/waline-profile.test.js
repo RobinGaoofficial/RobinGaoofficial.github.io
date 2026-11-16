@@ -1,7 +1,15 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
-const { patchWaline, replacement } = require('../tools/patch-waline.cjs');
+const { patchWaline, replacement, replyReplacement, editReplacement } = require('../tools/patch-waline.cjs');
+test('replies serialize PostgreSQL numeric ids and preserve string ids', () => {
+  const shipped = fs.readFileSync(require.resolve('../assets/vendor/waline/waline.js'), 'utf8');
+  assert.ok(shipped.includes(replyReplacement));
+  const assign = new Function('h', 'n', replyReplacement + ';return h;');
+  assert.deepEqual(assign({}, {replyId: 2, rootId: 1, replyUser: 'Robin'}), {pid: '2', rid: '1', at: 'Robin'});
+  assert.deepEqual(assign({}, {replyId: 'reply', rootId: 'root'}), {pid: 'reply', rid: 'root', at: ''});
+  assert.ok(shipped.includes(editReplacement));
+});
 test('the shipped client normalizes missing OAuth profile fields for comment validation', () => {
   const shipped = fs.readFileSync(require.resolve('../assets/vendor/waline/waline.js'), 'utf8');
   assert.ok(shipped.includes(replacement));

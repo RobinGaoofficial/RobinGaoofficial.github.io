@@ -11,3 +11,7 @@ Local compatibility patch: missing OAuth nickname, email and website values are
 normalized to empty strings before comment submission. This prevents null profile
 fields from failing @waline/core 0.1.0 validation. `tools/patch-waline.cjs` applies
 the change reproducibly and rejects unreviewed upstream code changes.
+
+Reply parent/root IDs are serialized as strings for PostgreSQL compatibility.
+The article comment edit button is shown only to the original author; the
+service's `preUpdate` hook also rejects text edits by other users, including admins.

@@ -9,4 +9,4 @@ process.env.SITE_URL = 'https://gaobinbin.dev';
 process.env.IPQPS = '60';
 
 const Application = require('@waline/vercel');
-module.exports = Application({});
+module.exports = Application(require('./comment-policy.cjs'));
