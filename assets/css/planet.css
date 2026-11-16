@@ -4,7 +4,7 @@
 .planet-ring{transform-origin:0 0;fill:none;stroke:#91afe5;stroke-width:1.15}
 .ring-one{transform:rotate(-18deg)}
 .ring-two{transform:rotate(48deg);stroke:#bdcef0}
-.planet-satellite{fill:var(--blue);stroke:none;offset-path:path('M190 0 A190 75 0 1 1 -190 0 A190 75 0 1 1 190 0');offset-rotate:0deg;offset-distance:12%}
+.planet-satellite{fill:var(--blue);stroke:none;offset-path:path('M190 0 A190 75 0 1 1 -190 0 A190 75 0 1 1 190 0 Z');offset-rotate:0deg;offset-distance:12%}
 .planet-caption{font:9px monospace;letter-spacing:3px;fill:var(--muted)}
 @keyframes planet-ring-one{to{transform:rotate(342deg)}}
 @keyframes planet-ring-two{to{transform:rotate(-312deg)}}
