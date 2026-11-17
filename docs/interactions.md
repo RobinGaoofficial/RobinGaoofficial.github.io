@@ -11,7 +11,9 @@
 - 使用文章路径作为身份，去除域名、查询和片段，兼容中文 URL 编码。未来不要随意改文章路径，否则要迁移计数和评论。
 - 后端未配置时只显示分享；连接失败时显示重试入口，阅读正文和分享仍可使用。
 
-## 部署到已同意的免费托管
+## 当前部署与灾难重建参考
+
+现有服务已启用，日常维护不要重复执行下列新建项目、建表或首个账号注册步骤。只有在确认恢复到新的空环境时才使用这些重建步骤。普通用户评论和回复已由站主验证；SMTP 验证邮件与找回密码仍需独立实测，首个管理员登录成功不能作为发信成功证据。
 
 当前服务项目为 `robin-blog-comments`（Vercel Hobby），正式地址为 `https://robin-blog-comments.vercel.app`。专用数据库 `robin-blog-comments-db` 使用 Neon Free，位于 iad1；连接变量只提供给 Production。Neon Auth 和 Realtime 未启用，账号由 Waline 管理。博主账号已核实为管理员，博客已配置此服务地址。后台的 LeanCloud 停服公告针对使用 LeanCloud 存储的站点，本项目使用 Neon，无需因此迁移。
 
@@ -43,5 +45,7 @@ node tools/preview-interactions.cjs
 预览地址：`http://127.0.0.1:4174/posts/interaction-preview.html`。它明确使用临时测试计数，仅用于界面验证，不能证明线上数据库或注册邮件可用；附加 `?disabled` 检查未配置后端，`?offline` 检查断网提示。
 
 更换 Waline 客户端版本时同步 package、锁文件、模板资源版本和 vendor 资源，再运行测试。备份数据库请使用 Neon 的导出方式保存到安全位置，不要提交读者邮箱或评论后台导出到公开仓库。
+
+同步脚本还会应用 `tools/patch-waline.cjs`：规范化 QQ 资料空值、将回复 ID 转为字符串，并仅向评论作者显示编辑按钮。服务端 `comment-policy.cjs` 同样禁止管理员改写他人评论正文。升级时必须逐项复核补丁；详情见 [开发维护文档](DEVELOPMENT.md)。
 
 官方参考：[Vercel＋Neon 部署](https://waline.js.org/guide/deploy/vercel.html)、[服务端环境变量](https://waline.js.org/reference/server/env.html)。

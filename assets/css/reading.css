@@ -25,3 +25,7 @@ a:hover{color:var(--hover)}button,select{font:inherit}button:focus-visible,selec
 .prose p:has(>img[data-blog-wrap="true"]:only-child),.prose p:has(>.image-zoom-trigger[data-blog-wrap="true"]:only-child){display:contents}
 .prose [data-blog-clear="true"]{clear:both;display:block}
 @media(max-width:700px){.prose [data-blog-wrap="true"]:not([data-blog-wrapped="true"]){float:none!important;width:100%!important;max-width:100%!important;margin:16px auto!important}}
+
+.footer-links{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px 16px;text-align:right;color:var(--muted)}
+.footer-links .footer-contact{flex-basis:100%}
+@media(max-width:700px){.footer-links{justify-content:center;text-align:center}}

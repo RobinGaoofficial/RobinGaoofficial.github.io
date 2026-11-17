@@ -1,0 +1,34 @@
+---
+layout: null
+permalink: /feed.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>{{ site.title | xml_escape }}</title>
+<link>{{ '/' | absolute_url | xml_escape }}</link>
+<description>{{ site.description | xml_escape }}</description>
+<language>zh-CN</language>
+<copyright>©2026-至今 高彬斌</copyright>
+<lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+<atom:link href="{{ '/feed.xml' | absolute_url | xml_escape }}" rel="self" type="application/rss+xml" />
+{% for post in site.posts limit:50 %}
+<item>
+<title>{{ post.title | xml_escape }}</title>
+<link>{{ post.url | absolute_url | xml_escape }}</link>
+<guid isPermaLink="true">{{ post.url | absolute_url | xml_escape }}</guid>
+<pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+<description>{{ post.excerpt | strip_html | normalize_whitespace | xml_escape }}</description>
+{% for category in post.categories %}<category>{{ category | xml_escape }}</category>{% endfor %}
+</item>
+{% endfor %}
+<item>
+<title>你好，世界！</title>
+<link>{{ '/posts/hello-world.html' | absolute_url | xml_escape }}</link>
+<guid isPermaLink="true">{{ '/posts/hello-world.html' | absolute_url | xml_escape }}</guid>
+<pubDate>Wed, 11 Nov 2026 00:00:00 +0800</pubDate>
+<description>今天，我搭建了自己的个人博客。</description>
+<category>博客搭建</category>
+</item>
+</channel>
+</rss>

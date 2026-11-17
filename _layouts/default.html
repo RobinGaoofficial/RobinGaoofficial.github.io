@@ -12,6 +12,8 @@
 {% if page.url == '/' %}<link rel="stylesheet" href="{{ '/assets/css/planet.css' | relative_url }}?v={{ site.time | date: '%s' }}">{% endif %}
 <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | absolute_url }}">
+<meta name="robots" content="{% if page.url == '/404.html' %}noindex,follow{% else %}index,follow{% endif %}">
 {% if page.layout == 'post' and page.collection == 'posts' %}
 {% if site.waline.server_url and site.waline.server_url != '' %}<link rel="stylesheet" href="{{ '/assets/vendor/waline/waline.css' | relative_url }}?v=3.16.2">{% endif %}
 <link rel="stylesheet" href="{{ '/assets/css/interactions.css' | relative_url }}?v={{ site.time | date: '%s' }}">
@@ -31,7 +33,7 @@
 <select id="theme-select" class="theme-select" aria-label="配色主题" hidden><option value="system">跟随系统</option><option value="light">浅色模式</option><option value="dark">深色模式</option></select>
 </div></div></header>
 <main id="content" class="site-main">{{ content }}</main>
-<footer class="site-footer"><span class="footer-copyright">© 高彬斌</span><span class="footer-motto">活在想象之外</span><a class="footer-contact" href="mailto:contact@gaobinbin.dev">联系与支持 · contact@gaobinbin.dev</a></footer>
+<footer class="site-footer"><span class="footer-copyright">©2026-至今 高彬斌</span><span class="footer-motto">活在想象之外</span><div class="footer-links"><a href="{{ '/feed.xml' | relative_url }}">RSS 订阅</a><a href="{{ '/content-use.html' | relative_url }}">内容使用说明</a><a class="footer-contact" href="mailto:contact@gaobinbin.dev">联系与支持 · contact@gaobinbin.dev</a></div></footer>
 <script src="{{ '/assets/js/reading.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

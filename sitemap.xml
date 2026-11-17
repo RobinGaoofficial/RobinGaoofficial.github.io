@@ -1,0 +1,10 @@
+---
+layout: null
+permalink: /sitemap.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% assign paths = '/,/archive.html,/categories.html,/about.html,/content-use.html,/posts/hello-world.html' | split: ',' %}
+{% for path in paths %}<url><loc>{{ path | absolute_url | xml_escape }}</loc></url>{% endfor %}
+{% for post in site.posts %}<url><loc>{{ post.url | absolute_url | xml_escape }}</loc></url>{% endfor %}
+</urlset>
