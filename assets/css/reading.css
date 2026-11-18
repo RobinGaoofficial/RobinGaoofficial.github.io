@@ -165,3 +165,40 @@ body,
 @media (prefers-reduced-motion: reduce) {
   .cloud-drag-handle { transition: none; }
 }
+
+/* Refined cloud-and-sun icon */
+.weather-control {
+  width: 46px;
+  flex: 0 0 46px;
+  --cloud-fill: #fff;
+}
+
+:root[data-theme="dark"] .weather-control {
+  --cloud-fill: #0d1626;
+}
+
+.weather-control .theme-toggle {
+  top: 0;
+  right: 0;
+}
+
+.weather-control .theme-toggle svg {
+  width: 19px;
+  height: 19px;
+}
+
+.cloud-drag-handle {
+  left: 1px;
+  top: 15px;
+  width: 32px;
+  height: 24px;
+}
+
+.cloud-drag-handle svg {
+  width: 32px;
+  height: 24px;
+}
+
+.cloud-drag-handle path {
+  stroke-width: 1.5;
+}
