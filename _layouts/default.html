@@ -30,7 +30,35 @@
 <a href="{{ '/categories.html' | relative_url }}" {% if page.url == '/categories.html' %}aria-current="page"{% endif %}>分类</a>
 <a href="{{ '/about.html' | relative_url }}" {% if page.url == '/about.html' %}aria-current="page"{% endif %}>关于</a>
 </nav>
-<select id="theme-select" class="theme-select" aria-label="配色主题" hidden><option value="system">跟随系统</option><option value="light">浅色模式</option><option value="dark">深色模式</option></select>
+
+<span class="theme-icon-picker">
+  <svg viewBox="0 0 24 24"
+       width="20" height="20"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.75"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2m0 16v2
+             M4.93 4.93l1.42 1.42
+             m11.3 11.3 1.42 1.42
+             M2 12h2m16 0h2
+             M4.93 19.07l1.42-1.42
+             m11.3-11.3 1.42-1.42"/>
+  </svg>
+  <select id="theme-select"
+          class="theme-select"
+          aria-label="配色主题"
+          title="切换配色主题"
+          hidden>
+    <option value="system">跟随系统</option>
+    <option value="light">浅色模式</option>
+    <option value="dark">深色模式</option>
+  </select>
+</span>
+
 </div></div></header>
 <main id="content" class="site-main">{{ content }}</main>
 <footer class="site-footer"><span class="footer-copyright">©2026-至今 高彬斌</span><span class="footer-motto">活在想象之外</span><div class="footer-links"><a href="{{ '/feed.xml' | relative_url }}">RSS 订阅</a><a href="{{ '/content-use.html' | relative_url }}">内容使用说明</a><a class="footer-contact" href="mailto:contact@gaobinbin.dev">联系与支持 · contact@gaobinbin.dev</a></div></footer>
