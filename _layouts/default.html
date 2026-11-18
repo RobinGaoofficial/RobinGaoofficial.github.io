@@ -31,6 +31,7 @@
 <a href="{{ '/about.html' | relative_url }}" {% if page.url == '/about.html' %}aria-current="page"{% endif %}>关于</a>
 </nav>
 
+<div class="weather-control">
 <button
   id="theme-toggle"
   class="theme-toggle"
@@ -66,11 +67,18 @@
     </g>
   </svg>
 </button>
+  <span id="cloud-drag-handle" class="cloud-drag-handle" aria-hidden="true">
+    <svg viewBox="0 0 44 32" aria-hidden="true" focusable="false">
+      <path d="M10 26.5C5.8 26.5 3 23.6 3 20c0-3.5 2.5-6.3 6-6.6C10.1 7.2 15.5 3.7 21 4.8c4.4.8 7.3 3.6 8.4 7.7C33.7 11.4 39 14.5 39 19.4c0 4-3 7.1-7.2 7.1Z"/>
+    </svg>
+  </span>
+</div>
 
 </div></div></header>
 <main id="content" class="site-main">{{ content }}</main>
 <footer class="site-footer"><span class="footer-copyright">©2026-至今 高彬斌</span><span class="footer-motto">活在想象之外</span><div class="footer-links"><a href="{{ '/feed.xml' | relative_url }}">RSS 订阅</a><a href="{{ '/content-use.html' | relative_url }}">内容使用说明</a><a class="footer-contact" href="mailto:contact@gaobinbin.dev">联系与支持 · contact@gaobinbin.dev</a></div></footer>
 <script src="{{ '/assets/js/reading.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/assets/js/cloud-drag.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>
 
