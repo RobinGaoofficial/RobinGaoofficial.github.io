@@ -30,54 +30,6 @@ a:hover{color:var(--hover)}button,select{font:inherit}button:focus-visible,selec
 .footer-links .footer-contact{flex-basis:100%}
 @media(max-width:700px){.footer-links{justify-content:center;text-align:center}}
 
-/* 极简太阳主题切换 */
-.theme-icon-picker {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  flex: none;
-  width: 36px;
-  height: 40px;
-  color: var(--muted);
-}
-
-.theme-icon-picker svg {
-  display: block;
-  pointer-events: none;
-}
-
-.theme-icon-picker:hover {
-  color: var(--blue);
-}
-
-.theme-icon-picker .theme-select {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  opacity: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-}
-
-.theme-icon-picker:has(.theme-select:focus-visible) {
-  outline: 3px solid var(--blue);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-
-@media (max-width: 380px) {
-  .header-actions .theme-icon-picker {
-    margin-left: auto;
-  }
-}
-
 /* Minimal theme toggle */
 
 .theme-toggle {
