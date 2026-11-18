@@ -94,3 +94,111 @@ body,
     color .24s ease,
     border-color .24s ease;
 }
+
+/* Mobile navigation */
+@media (max-width: 380px) {
+  .header-actions .theme-toggle {
+    margin-left: auto;
+  }
+}
+
+/* Respect reduced-motion settings */
+@media (prefers-reduced-motion: reduce) {
+  .theme-sun,
+  .theme-moon,
+  body,
+  .site-header,
+  .reading,
+  .post-card {
+    transition: none;
+  }
+}
+/* One cloud + sun/moon glyph. No border, box or shadow. */
+.weather-control {
+  position: relative;
+  width: 73px;
+  height: 40px;
+  flex: 0 0 73px;
+  --cloud-fill: var(--surface);
+}
+.weather-control .theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.cloud-drag-handle {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 10px;
+  display: block;
+  width: 43px;
+  height: 32px;
+  color: var(--muted);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+  transform: translate3d(var(--cloud-x, 0px), 0, 0);
+  transition: transform .34s cubic-bezier(.22, 1, .36, 1), color .2s ease;
+}
+.cloud-drag-handle svg {
+  display: block;
+  width: 43px;
+  height: 32px;
+  overflow: visible;
+  pointer-events: none;
+}
+.cloud-drag-handle path {
+  fill: var(--cloud-fill);
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cloud-drag-handle.is-dragging { cursor: grabbing; transition: none; }
+.cloud-drag-handle.is-armed { color: var(--blue); }
+@media (max-width: 380px) {
+  .header-actions .weather-control { margin-left: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cloud-drag-handle { transition: none; }
+}
+
+/* Refined cloud-and-sun icon */
+.weather-control {
+  width: 46px;
+  flex: 0 0 46px;
+  --cloud-fill: #fff;
+}
+
+:root[data-theme="dark"] .weather-control {
+  --cloud-fill: #0d1626;
+}
+
+.weather-control .theme-toggle {
+  top: 0;
+  right: 0;
+}
+
+.weather-control .theme-toggle svg {
+  width: 19px;
+  height: 19px;
+}
+
+.cloud-drag-handle {
+  left: 1px;
+  top: 15px;
+  width: 32px;
+  height: 24px;
+}
+
+.cloud-drag-handle svg {
+  width: 32px;
+  height: 24px;
+}
+
+.cloud-drag-handle path {
+  stroke-width: 1.5;
+}
