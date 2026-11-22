@@ -84,68 +84,77 @@
     button.hidden = false;
     apply();
 
-    let holdTimer = null;
-    let suppressClickUntil = 0;
-    let startX = 0;
-    let startY = 0;
+    let press = null;
+    let consumeClick = false;
 
-    function cancelHold() {
-      if (holdTimer !== null) {
-        clearTimeout(holdTimer);
-        holdTimer = null;
-      }
+    function finish() {
+      if (!press) return;
+      const { id, timer } = press;
+      press = null;
+      clearTimeout(timer);
+      button.removeAttribute('data-hold');
+      button.style.removeProperty('--cloud-x');
+      if (button.hasPointerCapture(id)) button.releasePointerCapture(id);
     }
-
-    button.addEventListener('click', event => {
-      // Do not toggle after a completed long press.
-      if (Date.now() < suppressClickUntil) return;
-
-      // Shift + click: restore automatic mode.
-      if (event.shiftKey) {
-        setPreference('system');
+    function cancel() {
+      if (press) consumeClick = true;
+      finish();
+    }
+    function track(event) {
+      const dx = event.clientX - press.x;
+      const dy = event.clientY - press.y;
+      if ((!press.held && Math.hypot(dx, dy) > 8) || Math.abs(dy) > 16) {
+        cancel();
         return;
       }
+      if (!press.held) return;
+      if (Math.hypot(dx, dy) > 8) press.moved = true;
+      button.style.setProperty('--cloud-x', Math.max(-72, Math.min(0, dx)) + 'px');
+      button.dataset.hold = dx <= -64 ? 'ready' : 'held';
+    }
 
-      // One click always reverses the visible theme.
-      setPreference(
-        currentTheme() === 'dark' ? 'light' : 'dark'
-      );
+    document.addEventListener('pointerdown', event => {
+      if (press && event.pointerId !== press.id) cancel();
+    }, true);
+    button.addEventListener('pointerdown', event => {
+      if (!event.isPrimary || event.button !== 0 || press) return;
+      consumeClick = false;
+      press = { id: event.pointerId, x: event.clientX, y: event.clientY, held: false, moved: false };
+      button.setPointerCapture(press.id);
+      press.timer = setTimeout(() => {
+        press.held = true;
+        consumeClick = true;
+        button.dataset.hold = 'held';
+      }, 500);
     });
-
-    // Right-click or keyboard context-menu key.
+    button.addEventListener('pointermove', event => {
+      if (press?.id === event.pointerId) track(event);
+    });
+    button.addEventListener('pointerup', event => {
+      if (press?.id !== event.pointerId) return;
+      track(event);
+      if (!press) return;
+      const openCloud = button.dataset.hold === 'ready';
+      const restore = press.held && !press.moved;
+      finish();
+      if (openCloud) window.open('https://cloud.gaobinbin.dev/', '_blank', 'noopener,noreferrer');
+      else if (restore) setPreference('system');
+    });
+    for (const type of ['pointercancel', 'lostpointercapture']) {
+      button.addEventListener(type, event => { if (event.pointerId === press?.id) cancel(); });
+    }
+    window.addEventListener('blur', cancel);
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') cancel(); });
     button.addEventListener('contextmenu', event => {
       event.preventDefault();
-      cancelHold();
+      if (event.pointerType === 'touch' || press) return;
       setPreference('system');
     });
-
-    // Touch and pen: long press restores system mode.
-    button.addEventListener('pointerdown', event => {
-      if (event.pointerType === 'mouse' ||
-          event.button !== 0) return;
-
-      cancelHold();
-      startX = event.clientX;
-      startY = event.clientY;
-
-      holdTimer = setTimeout(() => {
-        holdTimer = null;
-        setPreference('system');
-        suppressClickUntil = Date.now() + 850;
-      }, 650);
+    button.addEventListener('click', event => {
+      if (consumeClick && event.detail !== 0) return;
+      setPreference(event.shiftKey ? 'system' : currentTheme() === 'dark' ? 'light' : 'dark');
     });
 
-    button.addEventListener('pointermove', event => {
-      if (Math.abs(event.clientX - startX) > 10 ||
-          Math.abs(event.clientY - startY) > 10) {
-        cancelHold();
-      }
-    });
-
-    ['pointerup', 'pointercancel', 'pointerleave']
-      .forEach(type =>
-        button.addEventListener(type, cancelHold)
-      );
   }
 
   if (document.readyState === 'loading') {
