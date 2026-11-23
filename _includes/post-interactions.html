@@ -12,6 +12,11 @@
     </button>
     {% if site.waline.server_url and site.waline.server_url != '' %}<a class="article-action" href="#comments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5A8.5 8.5 0 0 1 10.5 3h2a8.5 8.5 0 0 1 8.5 8.5Z"/></svg>写评论</a>{% endif %}
   </div>
+  <div id="article-share-options" data-share-options hidden>
+    <p>电脑端无法直接分享到微信，请复制链接后粘贴到微信。</p>
+    <button class="article-action" type="button" data-copy-link>复制链接</button>
+    <button class="article-action" type="button" data-system-share>系统分享</button>
+  </div>
   <p class="interaction-status" data-share-status role="status" aria-live="polite"></p>
   <input class="share-link" data-share-link aria-label="文章分享链接" readonly hidden>
   {% if site.waline.server_url and site.waline.server_url != '' %}

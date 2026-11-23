@@ -8,6 +8,9 @@
 .article-action:disabled{opacity:.6;cursor:default}
 .interaction-status{margin:10px 0 0;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
 .interaction-status:empty{display:none}
+[data-share-options]{margin-top:12px;padding:12px 16px;border:1px solid var(--border);border-radius:10px;color:var(--muted)}
+[data-share-options] p{margin:0 0 10px}
+[data-share-options][hidden],[data-share-options] button[hidden]{display:none}
 .share-link{margin-top:10px;width:100%;min-height:44px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;font-size:14px}
 .article-comments{margin-top:34px;scroll-margin-top:28px;min-width:0}
 .article-comments h2{margin:0 0 6px;font-size:21px;line-height:1.5}

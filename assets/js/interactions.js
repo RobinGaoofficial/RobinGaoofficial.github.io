@@ -100,16 +100,37 @@
     const share = root.querySelector('[data-share]');
     const manual = root.querySelector('[data-share-link]');
     const label = share.querySelector('[data-share-label]');
-    if (label && typeof navigator.share !== 'function') label.textContent = '复制文章链接';
+    const options = root.querySelector('[data-share-options]');
+    const desktop = options && (/Windows NT/i.test(navigator.userAgent) ||
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+    if (!desktop && label && typeof navigator.share !== 'function') label.textContent = '复制文章链接';
     share.hidden = false;
-    share.addEventListener('click', async () => {
-      share.disabled = true;
-      const result = await shareArticle({ title: root.dataset.title, url: identity.url }, navigator);
+    async function performShare(button, useNative) {
+      button.disabled = true;
+      const result = await shareArticle({ title: root.dataset.title, url: identity.url }, navigator, useNative);
       status.textContent = { shared: '已打开系统分享', copied: '文章链接已复制', cancelled: '', manual: '请手动复制下方文章链接' }[result];
       manual.hidden = result !== 'manual';
       if (!manual.hidden) { manual.value = identity.url; manual.focus(); manual.select(); }
-      share.disabled = false;
-    });
+      button.disabled = false;
+    }
+    if (desktop) {
+      const copy = options.querySelector('[data-copy-link]');
+      const system = options.querySelector('[data-system-share]');
+      system.hidden = typeof navigator.share !== 'function';
+      share.setAttribute('aria-controls', options.id);
+      share.setAttribute('aria-expanded', 'false');
+      share.addEventListener('click', () => {
+        options.hidden = !options.hidden;
+        share.setAttribute('aria-expanded', String(!options.hidden));
+        manual.hidden = true;
+        status.textContent = '';
+        if (!options.hidden) copy.focus();
+      });
+      copy.addEventListener('click', () => performShare(copy, false));
+      system.addEventListener('click', () => performShare(system, true));
+    } else {
+      share.addEventListener('click', () => performShare(share, true));
+    }
 
     const serverURL = root.dataset.serverUrl;
     if (!serverURL) return;
