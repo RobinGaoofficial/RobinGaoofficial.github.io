@@ -1,0 +1,27 @@
+{%- assign card_type = 'website' -%}
+{%- if page.collection == 'posts' or page.url == '/posts/hello-world.html' -%}
+  {%- assign card_type = 'article' -%}
+{%- endif -%}
+{%- assign summary = page.description | strip_html | strip -%}
+{%- if summary == empty and card_type == 'article' -%}
+  {%- assign summary = page.excerpt | strip_html | strip -%}
+  {%- if summary == empty -%}
+    {%- assign summary = page.content | strip_html | strip -%}
+  {%- endif -%}
+{%- endif -%}
+{%- assign summary = summary | default: site.description | normalize_whitespace | truncate: 150 | escape_once -%}
+{%- assign card_title = page.title | default: site.title | escape_once -%}
+{%- assign cover = page.cover | default: '/assets/images/share-card.png' | absolute_url | escape -%}
+<meta name="description" content="{{ summary }}">
+<meta property="og:type" content="{{ card_type }}">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="{{ site.title | escape }}">
+<meta property="og:title" content="{{ card_title }}">
+<meta property="og:description" content="{{ summary }}">
+<meta property="og:url" content="{{ page.url | absolute_url | escape }}">
+<meta property="og:image" content="{{ cover }}">
+<meta property="og:image:alt" content="{% if page.cover %}{{ page.cover_alt | default: page.title | escape_once }}{% else %}高彬斌的博客 · 活在想象之外{% endif %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ card_title }}">
+<meta name="twitter:description" content="{{ summary }}">
+<meta name="twitter:image" content="{{ cover }}">
