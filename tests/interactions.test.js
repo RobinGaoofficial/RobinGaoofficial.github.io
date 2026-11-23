@@ -25,6 +25,13 @@ test('sharing uses the native sheet, cancellation does not copy, unsupported sha
   assert.equal(await shareArticle(data, { clipboard: { writeText: async value => { received = value; } } }), 'copied');
   assert.equal(received, data.url);
   assert.equal(await shareArticle(data, {}), 'manual');
+  let nativeCalls = 0;
+  const desktop = { share: () => { nativeCalls++; }, clipboard: {writeText: async url => {received=url;}} };
+  assert.equal(await shareArticle(data, desktop, false), 'copied');
+  assert.equal(received, data.url);
+  desktop.clipboard.writeText = async () => { throw Error('denied'); };
+  assert.equal(await shareArticle(data, desktop, false), 'manual');
+  assert.equal(nativeCalls, 0);
 });
 
 test('pageviews increment only once per article per session, including concurrent calls', async () => {

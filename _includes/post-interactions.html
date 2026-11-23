@@ -8,7 +8,7 @@
     {% endif %}
     <button class="article-action" type="button" data-share hidden>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M5 13v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></svg>
-      分享文章
+      <span data-share-label>分享文章</span>
     </button>
     {% if site.waline.server_url and site.waline.server_url != '' %}<a class="article-action" href="#comments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5A8.5 8.5 0 0 1 10.5 3h2a8.5 8.5 0 0 1 8.5 8.5Z"/></svg>写评论</a>{% endif %}
   </div>
