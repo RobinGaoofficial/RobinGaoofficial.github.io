@@ -11,7 +11,11 @@
 {%- endif -%}
 {%- assign summary = summary | default: site.description | normalize_whitespace | truncate: 150 | escape_once -%}
 {%- assign card_title = page.title | default: site.title | escape_once -%}
-{%- assign cover = page.cover | default: '/assets/images/share-card.png' | absolute_url | escape -%}
+{%- assign default_cover = '/assets/images/share-card.png' -%}
+{%- if card_type == 'article' -%}
+  {%- assign default_cover = '/assets/images/share-icon.png' -%}
+{%- endif -%}
+{%- assign cover = page.cover | default: default_cover | absolute_url | escape -%}
 <meta name="description" content="{{ summary }}">
 <meta property="og:type" content="{{ card_type }}">
 <meta property="og:locale" content="zh_CN">
@@ -20,8 +24,12 @@
 <meta property="og:description" content="{{ summary }}">
 <meta property="og:url" content="{{ page.url | absolute_url | escape }}">
 <meta property="og:image" content="{{ cover }}">
-<meta property="og:image:alt" content="{% if page.cover %}{{ page.cover_alt | default: page.title | escape_once }}{% else %}高彬斌的博客 · 活在想象之外{% endif %}">
+{% if card_type == 'article' and page.cover == nil %}
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+{% endif %}
+<meta property="og:image:alt" content="{% if page.cover %}{{ page.cover_alt | default: page.title | escape_once }}{% elsif card_type == 'article' %}高彬斌的博客 R 标识{% else %}高彬斌的博客 · 活在想象之外{% endif %}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ card_title }}">
 <meta name="twitter:description" content="{{ summary }}">
-<meta name="twitter:image" content="{{ cover }}">
+<meta name="twitter:image" content="{{ page.cover | default: '/assets/images/share-card.png' | absolute_url | escape }}">
