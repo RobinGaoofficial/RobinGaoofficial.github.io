@@ -44,12 +44,33 @@
 
   function counterValue(result, field) {
     if (!Array.isArray(result) || !result[0]) throw new Error('Invalid counter response');
-    const value = result[0][field] ?? 0;
+    const value = result[0][field];
     if (!Number.isFinite(value) || value < 0) throw new Error('Invalid counter value');
     return value;
   }
 
-  function createCounters({ api, serverURL, path, sessionStorage, localStorage }) {
+  async function requestCounter(url, options) {
+    const response = await fetch(url, options);
+    if (!response.ok) throw new Error('Counter service unavailable');
+    const result = await response.json();
+    if (result.errno !== 0) throw new Error('Counter request failed');
+    return result.data;
+  }
+
+  const counterApi = {
+    getArticleCounter({ serverURL, paths, type, lang }) {
+      const query = new URLSearchParams({ path: paths.join(','), type: type.join(','), lang });
+      return requestCounter(`${serverURL}/api/article?${query}`);
+    },
+    updateArticleCounter({ serverURL, lang, path, type, action }) {
+      return requestCounter(`${serverURL}/api/article?lang=${lang}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path, type, action })
+      });
+    }
+  };
+
+  function createCounters({ api = counterApi, serverURL, path, sessionStorage, localStorage }) {
     const base = { serverURL: serverURL.replace(/\/$/, ''), path, lang: 'zh-CN' };
     const key = `${base.serverURL}|${path}`;
     const session = storageWithFallback(sessionStorage);
@@ -58,13 +79,17 @@
     const likeKey = `robin:like:${key}`;
     let viewRequest;
     let likeRequest;
-    const read = () => api.getArticleCounter({ serverURL: base.serverURL, lang: base.lang, paths: [path], type: ['time', 'reaction0'] });
+    let readRequest;
+    function read() {
+      if (!readRequest) {
+        readRequest = api.getArticleCounter({ serverURL: base.serverURL, lang: base.lang, paths: [path], type: ['time', 'reaction0'] })
+          .finally(() => { readRequest = null; });
+      }
+      return readRequest;
+    }
     const liked = () => local.get(likeKey) === '1';
     return {
-      read: async () => {
-        const result = await read();
-        return { views: counterValue(result, 'time'), likes: counterValue(result, 'reaction0') };
-      },
+      likes: async () => counterValue(await read(), 'reaction0'),
       liked,
       view() {
         if (viewRequest) return viewRequest;
@@ -140,34 +165,39 @@
     const views = document.querySelector('[data-view-count]');
     const serviceStatus = root.querySelector('[data-service-status]');
     const retry = root.querySelector('[data-service-retry]');
-    let counters;
-    let instance;
-    let loading = false;
+    const counters = createCounters({ serverURL, path: identity.path, sessionStorage: browserStorage('sessionStorage'), localStorage: browserStorage('localStorage') });
+    let likeRevision = 0;
+    let commentAttempts = 0;
     function updateLikeState() {
       like.setAttribute('aria-pressed', String(counters.liked()));
       likeLabel.textContent = counters.liked() ? '已点赞' : '点赞';
       like.title = counters.liked() ? '取消点赞' : '喜欢这篇文章';
     }
     like.addEventListener('click', async () => {
-      if (!counters) return;
+      if (like.disabled) return;
       like.disabled = true;
       try {
         likes.textContent = await counters.toggleLike();
+        likeRevision++;
         updateLikeState();
         status.textContent = counters.liked() ? '谢谢你的喜欢' : '已取消点赞';
       } catch (_) { status.textContent = '点赞未能保存，请稍后重试'; }
       finally { like.disabled = false; }
     });
-    async function load() {
-      if (loading) return;
-      loading = true;
-      retry.hidden = true;
-      serviceStatus.textContent = '正在连接评论…';
-      try {
-        const api = await import(root.dataset.clientModule);
-        if (!counters) counters = createCounters({ api, serverURL, path: identity.path, sessionStorage: browserStorage('sessionStorage'), localStorage: browserStorage('localStorage') });
-        updateLikeState();
-        if (!instance) instance = api.init({
+    updateLikeState();
+    like.disabled = false;
+    const tasks = {
+      阅读量: async () => { views.textContent = await counters.view(); },
+      点赞数: async () => {
+        const revision = likeRevision;
+        const count = await counters.likes();
+        if (revision === likeRevision) likes.textContent = count;
+      },
+      评论: async () => {
+        const url = new URL(root.dataset.clientModule, document.baseURI);
+        if (commentAttempts++) url.searchParams.set('retry', commentAttempts);
+        const api = await import(url.href);
+        api.init({
           el: root.querySelector('[data-comments]'), serverURL, path: identity.path,
           lang: 'zh-CN', login: 'force', dark: 'html[data-theme="dark"]',
           pageview: false, comment: false, reaction: false, pageSize: 10,
@@ -175,21 +205,21 @@
           noRss: true, noCopyright: true, commentSorting: 'latest',
           locale: { placeholder: '写下你的想法，和我聊聊这篇文章…', sofa: '还没有评论，欢迎来聊聊。', login: '登录 / 注册' }
         });
-        const results = await Promise.allSettled([counters.view(), counters.read()]);
-        if (results[0].status === 'fulfilled') views.textContent = results[0].value;
-        if (results[1].status === 'fulfilled') {
-          likes.textContent = results[1].value.likes;
-          like.disabled = false;
-        }
-        if (results.some(result => result.status === 'rejected')) throw new Error('Service unavailable');
-        serviceStatus.textContent = '';
-      } catch (_) {
-        serviceStatus.textContent = '互动服务暂时无法连接，仍可继续阅读或分享文章。';
-        retry.hidden = false;
-      } finally { loading = false; }
+      }
+    };
+    const failed = new Set();
+    function showFailures() {
+      retry.hidden = failed.size === 0;
+      serviceStatus.textContent = failed.size ? `${[...failed].join('、')}加载失败，请重试。` : '';
     }
-    retry.addEventListener('click', load);
-    await load();
+    async function run(name) {
+      failed.delete(name);
+      showFailures();
+      try { await tasks[name](); }
+      catch (_) { failed.add(name); showFailures(); }
+    }
+    retry.addEventListener('click', () => [...failed].forEach(run));
+    await Promise.all(Object.keys(tasks).map(run));
   }
 
   if (typeof module === 'object' && module.exports) module.exports = { articleIdentity, shareArticle, createCounters };
