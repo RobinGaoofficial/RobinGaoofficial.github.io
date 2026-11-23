@@ -99,16 +99,13 @@
     const status = root.querySelector('[data-share-status]');
     const share = root.querySelector('[data-share]');
     const manual = root.querySelector('[data-share-link]');
-    // Windows can expose a native share target even if its WeChat window stops responding.
-    const desktop = /Windows NT/i.test(navigator.userAgent) ||
-      window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const label = share.querySelector('[data-share-label]');
-    if (desktop && label) label.textContent = '复制文章链接';
+    if (label && typeof navigator.share !== 'function') label.textContent = '复制文章链接';
     share.hidden = false;
     share.addEventListener('click', async () => {
       share.disabled = true;
-      const result = await shareArticle({ title: root.dataset.title, url: identity.url }, navigator, !desktop);
-      status.textContent = { shared: '已打开系统分享', copied: '文章链接已复制，可粘贴到微信或其他应用', cancelled: '', manual: '请手动复制下方文章链接' }[result];
+      const result = await shareArticle({ title: root.dataset.title, url: identity.url }, navigator);
+      status.textContent = { shared: '已打开系统分享', copied: '文章链接已复制', cancelled: '', manual: '请手动复制下方文章链接' }[result];
       manual.hidden = result !== 'manual';
       if (!manual.hidden) { manual.value = identity.url; manual.focus(); manual.select(); }
       share.disabled = false;
