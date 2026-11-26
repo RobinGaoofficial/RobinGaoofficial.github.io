@@ -1,6 +1,4 @@
-.humanities-only { display: none; }
-[data-style="humanities"] :is(.hero .tech-only,.planet-art) { display: none; }
-[data-style="humanities"] .humanities-only { display: block; }
+[data-style="humanities"] .planet-art { display: none; }
 [data-style="humanities"] .hero {
   grid-template-columns: minmax(0,1fr) minmax(130px,22%);
   min-height: 0;

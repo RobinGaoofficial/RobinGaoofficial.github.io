@@ -1,3 +1,6 @@
+.humanities-only,
+[data-style="humanities"] .tech-only { display: none; }
+[data-style="humanities"] .humanities-only { display: block; }
 .appearance-controls { display: flex; align-items: center; gap: 4px; }
 #style-choice {
   min-height: 44px;
