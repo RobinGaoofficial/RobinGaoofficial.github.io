@@ -43,6 +43,24 @@
   const pageSize = 6;
   let page = 1;
 
+  function pageFromUrl() {
+    const value = Number(new URLSearchParams(location.search).get('page'));
+    return Number.isSafeInteger(value) && value > 0 ? value : 1;
+  }
+
+  function rememberCard(event) {
+    const link = event.target.closest('a');
+    const card = link?.closest('.post-card');
+    if (!card) return;
+    try {
+      sessionStorage.setItem('blog:list:' + link.pathname, JSON.stringify({
+        search: location.search, offset: card.getBoundingClientRect().top, expanded: !panel.hidden
+      }));
+    } catch (_) { /* The return link still identifies the card. */ }
+  }
+  grid.addEventListener('click', rememberCard);
+  grid.addEventListener('auxclick', rememberCard);
+
   function addOptions(select, values) {
     values.forEach(value => {
       const option = document.createElement('option');
@@ -93,6 +111,9 @@
     const url = new URL(window.location.href);
     ['q', 'category', 'month', 'from', 'to', 'sort'].forEach(key => url.searchParams.delete(key));
     new URLSearchParams(search).forEach((value, key) => url.searchParams.set(key, value));
+    if (page > 1) url.searchParams.set('page', String(page));
+    else url.searchParams.delete('page');
+    if (url.hash.startsWith('#result=')) url.hash = 'notes';
     window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
   }
 
@@ -190,15 +211,34 @@
     page = 1;
     render();
   });
-  window.addEventListener('popstate', () => {
+  function restoreList() {
     const criteria = window.PostBrowser.normalizeFilters(window.PostBrowser.filtersFromSearch(window.location.search));
     restoreFilters(criteria);
-    page = 1;
+    page = pageFromUrl();
     render(false);
+  }
+  function restoreCard() {
+    const target = posts.find(post => !post.card.hidden &&
+      location.hash === '#result=' + encodeURIComponent(post.heading.pathname));
+    if (!target) return;
+    let offset = 24;
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('blog:list:' + target.heading.pathname));
+      if (saved && saved.search === location.search && Number.isFinite(saved.offset)) {
+        setExpanded(saved.expanded);
+        offset = saved.offset;
+      }
+    } catch (_) { /* Use the card position without session storage. */ }
+    window.scrollBy({ top: target.card.getBoundingClientRect().top - offset, behavior: 'instant' });
+  }
+  window.addEventListener('popstate', () => {
+    restoreList();
+    requestAnimationFrame(restoreCard);
   });
 
-  const initial = window.PostBrowser.normalizeFilters(window.PostBrowser.filtersFromSearch(window.location.search));
-  restoreFilters(initial);
-  render(false);
+  restoreList();
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) requestAnimationFrame(restoreCard);
+  });
 })();
 

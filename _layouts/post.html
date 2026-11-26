@@ -3,6 +3,20 @@ layout: default
 ---
 <div class="reading-wrap">
 <a class="back-link" href="{{ '/' | relative_url }}">← 返回首页</a>
+{% if page.collection == 'posts' or page.url == '/posts/hello-world.html' %}
+<script>
+{
+  const link = document.currentScript.previousElementSibling;
+  if (document.referrer) {
+    const source = new URL(document.referrer);
+    if (source.origin === location.origin && source.pathname === link.pathname) {
+      source.hash = 'result=' + encodeURIComponent(location.pathname);
+      link.href = source.href;
+    }
+  }
+}
+</script>
+{% endif %}
 <article class="reading">
 <header class="post-header">
 <p class="eyebrow">NOTES & IDEAS</p>
