@@ -85,6 +85,7 @@
     to.value = criteria.to;
     sort.value = criteria.sort;
     setTimeMode(Boolean(criteria.from || criteria.to));
+    setExpanded(Boolean(criteria.category || criteria.month || criteria.from || criteria.to || criteria.sort !== 'newest'));
   }
 
   function syncUrl(criteria) {
@@ -152,8 +153,6 @@
     render();
   }
 
-  input.addEventListener('focus', () => setExpanded(true));
-  input.addEventListener('click', () => setExpanded(true));
   input.addEventListener('input', changed);
   toggle.addEventListener('click', () => setExpanded(panel.hidden));
   category.addEventListener('change', changed);
@@ -194,14 +193,12 @@
   window.addEventListener('popstate', () => {
     const criteria = window.PostBrowser.normalizeFilters(window.PostBrowser.filtersFromSearch(window.location.search));
     restoreFilters(criteria);
-    setExpanded(window.PostBrowser.activeFilterCount(criteria) > 0 || criteria.sort !== 'newest');
     page = 1;
     render(false);
   });
 
   const initial = window.PostBrowser.normalizeFilters(window.PostBrowser.filtersFromSearch(window.location.search));
   restoreFilters(initial);
-  setExpanded(window.PostBrowser.activeFilterCount(initial) > 0 || initial.sort !== 'newest');
   render(false);
 })();
 
