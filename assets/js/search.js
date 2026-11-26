@@ -137,7 +137,7 @@
     cards.forEach(card => { card.hidden = !visible.has(card); });
     // DOM order must match the sorted results, not just their visibility.
     results.forEach(post => grid.append(post.card));
-    const hasConditions = window.PostBrowser.activeFilterCount(criteria) > 0 || criteria.sort !== 'newest';
+    const hasConditions = Boolean(criteria.keyword) || window.PostBrowser.activeFilterCount(criteria) > 0 || criteria.sort !== 'newest';
     status.hidden = !hasConditions;
     status.textContent = hasConditions ? `找到 ${results.length} 篇文章${results.length ? `，第 ${page} / ${paged.totalPages} 页` : ''}` : '';
     empty.hidden = results.length !== 0;

@@ -57,6 +57,13 @@ test('restores URL filters, counts active conditions, and keeps month exclusive 
   const filters = normalizeFilters(filtersFromSearch('?q=search&category=%E5%AD%A6%E4%B9%A0&month=2026-11&from=2026-11-01&to=2026-11-14&sort=oldest'));
 
   assert.deepEqual(filters, { keyword: 'search', category: '学习', month: '', from: '2026-11-01', to: '2026-11-14', sort: 'oldest' });
-  assert.equal(activeFilterCount(filters), 3);
+  assert.equal(activeFilterCount(filters), 2);
   assert.equal(filtersToSearch(filters), '?q=search&category=%E5%AD%A6%E4%B9%A0&from=2026-11-01&to=2026-11-14&sort=oldest');
+});
+
+test('counts only category and time filters alongside a keyword', () => {
+  assert.equal(activeFilterCount({ keyword: '123' }), 0);
+  assert.equal(activeFilterCount({ keyword: '123', sort: 'oldest' }), 0);
+  assert.equal(activeFilterCount({ keyword: '123', category: '学习' }), 1);
+  assert.equal(activeFilterCount({ keyword: '123', category: '学习', month: '2026-11' }), 2);
 });

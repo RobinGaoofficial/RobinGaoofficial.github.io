@@ -48,7 +48,7 @@
 
   function activeFilterCount(filters) {
     const criteria = normalizeFilters(filters);
-    return Number(Boolean(criteria.keyword)) + Number(Boolean(criteria.category)) + Number(Boolean(criteria.month || criteria.from || criteria.to));
+    return Number(Boolean(criteria.category)) + Number(Boolean(criteria.month || criteria.from || criteria.to));
   }
 
   function filterAndSortPosts(posts, filters) {
