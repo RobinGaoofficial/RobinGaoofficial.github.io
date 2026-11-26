@@ -5,14 +5,22 @@
   // Native anchors keep the directory useful with keyboard navigation and history.
   const headings = Array.from(prose.querySelectorAll('h2, h3'));
   if (headings.length >= 2) {
-    const directory = document.createElement('details');
+    const wide = window.matchMedia('(min-width: 1120px)');
+    const section = document.createElement('div');
+    section.className = 'reading-sections';
+    prose.before(section);
+    const directory = document.createElement('aside');
     directory.className = 'article-toc';
-    directory.open = window.matchMedia('(min-width: 701px)').matches;
-    const summary = document.createElement('summary');
-    summary.textContent = '本文目录';
-    directory.append(summary);
+    const title = document.createElement('strong');
+    title.textContent = '本文目录';
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.textContent = '目录';
+    toggle.setAttribute('aria-controls', 'section-navigation');
+    directory.append(title, toggle);
     const nav = document.createElement('nav');
     nav.setAttribute('aria-label', '本文目录');
+    nav.id = 'section-navigation';
     const list = document.createElement('ol');
     const links = new Map();
     for (const [index, heading] of headings.entries()) {
@@ -33,16 +41,69 @@
     }
     nav.append(list);
     directory.append(nav);
-    prose.before(directory);
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(entries => {
-        const current = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (!current) return;
-        for (const link of links.values()) link.removeAttribute('aria-current');
-        links.get(current.target).setAttribute('aria-current', 'location');
-      }, {rootMargin: '-5% 0px -65% 0px'});
-      headings.forEach(heading => observer.observe(heading));
+    section.append(directory, prose);
+    prose.closest('.reading-wrap').classList.add('with-toc');
+    function expand(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.hidden = !wide.matches && !open;
     }
+    expand(false);
+    toggle.addEventListener('click', () => expand(nav.hidden));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !wide.matches && !nav.hidden) {
+        expand(false);
+        toggle.focus({preventScroll: true});
+      }
+    });
+    nav.addEventListener('click', event => {
+      const link = event.target.closest('a');
+      if (!link || wide.matches || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      expand(false);
+      const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      target.tabIndex = -1;
+      target.focus({preventScroll: true});
+    });
+
+    let active;
+    let pending = false;
+    let previousWide = wide.matches;
+    let position;
+    function updateChapter() {
+      pending = false;
+      if (previousWide !== wide.matches) {
+        expand(false);
+        previousWide = wide.matches;
+        if (position) {
+          const rect = position.block.getBoundingClientRect();
+          window.scrollBy({top: rect.top + rect.height * position.fraction - 100, behavior: 'instant'});
+        }
+      }
+      const bounds = prose.getBoundingClientRect();
+      const block = document.elementFromPoint(bounds.left + bounds.width / 2, 100)?.closest('.prose > *');
+      position = null;
+      if (block) {
+        const rect = block.getBoundingClientRect();
+        if (rect.height) position = {block, fraction: (100 - rect.top) / rect.height};
+      }
+      const top = wide.matches ? 56 : 100;
+      let current = headings[0];
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top > top) break;
+        current = heading;
+      }
+      if (current === active) return;
+      if (active) links.get(active).removeAttribute('aria-current');
+      links.get(current).setAttribute('aria-current', 'location');
+      active = current;
+    }
+    function scheduleChapter() {
+      if (!pending) requestAnimationFrame(updateChapter);
+      pending = true;
+    }
+    window.addEventListener('scroll', scheduleChapter, {passive: true});
+    window.addEventListener('resize', scheduleChapter);
+    wide.addEventListener('change', scheduleChapter);
+    updateChapter();
   }
 
   for (const pre of prose.querySelectorAll('pre')) {
