@@ -21,7 +21,25 @@
   const rangeFields = document.querySelector('#range-fields');
   const dateError = document.querySelector('#date-error');
   const grid = document.querySelector('.post-grid');
-  const posts = cards.map((card, index) => ({ card, index, text: card.dataset.search, title: card.dataset.title, category: card.dataset.category, date: card.dataset.date }));
+  const posts = cards.map(card => {
+    const summary = card.querySelector('p');
+    return { card, summary, excerpt: summary.textContent, heading: card.querySelector('h3 a'),
+      text: card.dataset.search, title: card.dataset.title, category: card.dataset.category, date: card.dataset.date };
+  });
+
+  function highlight(element, text, match, surroundingText) {
+    if (!match) {
+      if (element.textContent !== text || element.childElementCount) element.textContent = text;
+      return;
+    }
+    const end = match.index + match[0].length;
+    const start = surroundingText ? Math.max(0, match.index - 32) : 0;
+    const stop = surroundingText ? Math.min(text.length, end + 60) : text.length;
+    const mark = document.createElement('mark');
+    mark.textContent = match[0];
+    element.replaceChildren((start ? '…' : '') + text.slice(start, match.index), mark,
+      text.slice(end, stop) + (stop < text.length ? '…' : ''));
+  }
   const pageSize = 6;
   let page = 1;
 
@@ -107,6 +125,12 @@
     const criteria = filters();
     const results = window.PostBrowser.filterAndSortPosts(posts, criteria);
     const paged = window.PostBrowser.paginatePosts(results, page, pageSize);
+    const pattern = criteria.keyword && new RegExp(criteria.keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'iu');
+    for (const post of paged.items) {
+      const bodyMatch = pattern ? pattern.exec(post.text) : null;
+      highlight(post.summary, bodyMatch ? post.text : post.excerpt, bodyMatch, true);
+      highlight(post.heading, post.title, pattern ? pattern.exec(post.title) : null, false);
+    }
     page = paged.page;
     const visible = new Set(paged.items.map(post => post.card));
     cards.forEach(card => { card.hidden = !visible.has(card); });

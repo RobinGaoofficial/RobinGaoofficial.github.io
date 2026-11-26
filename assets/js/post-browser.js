@@ -61,7 +61,7 @@
 
     return posts.filter(post => {
       const date = normalized(post.date);
-      return (!keyword || normalized(post.text).toLocaleLowerCase().includes(keyword)) &&
+      return (!keyword || normalized(post.title).toLocaleLowerCase().includes(keyword) || normalized(post.text).toLocaleLowerCase().includes(keyword)) &&
         (!category || normalized(post.category) === category) &&
         (!month || date.startsWith(month)) &&
         (!from || date >= from) &&

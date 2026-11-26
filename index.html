@@ -38,13 +38,13 @@ layout: default
 <noscript><p class="muted">搜索需要启用 JavaScript；你仍可以阅读下方全部文章。</p></noscript>
 <div class="post-grid">
 {% for post in site.posts %}
-<article class="post-card" data-search="{{ post.title | append: ' ' | append: post.content | strip_html | normalize_whitespace | escape }}" data-title="{{ post.title | escape }}" data-category="{{ post.categories | first | default: '随笔' | escape }}" data-date="{{ post.date | date: '%Y-%m-%d' }}">
+<article class="post-card" data-search="{{ post.content | strip_html | normalize_whitespace | escape }}" data-title="{{ post.title | escape }}" data-category="{{ post.categories | first | default: '随笔' | escape }}" data-date="{{ post.date | date: '%Y-%m-%d' }}">
 <div class="card-top"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time><span>{{ post.categories | first | default: '随笔' | escape }}</span></div>
 <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
 <p>{{ post.excerpt | strip_html | truncate: 120 | escape }}</p><a class="read-link" href="{{ post.url | relative_url }}">阅读全文 <span aria-hidden="true">↗</span></a>
 </article>
 {% endfor %}
-<article class="post-card" data-search="你好，世界！ 今天，我搭建了自己的个人博客。从创建仓库，到编写首页，再到成功上线，我第一次把自己写的网页发布到了互联网上。学习中的发现、生活中的思考，以及探索新事物的经历。" data-title="你好，世界！" data-category="博客搭建" data-date="2026-11-11">
+<article class="post-card" data-search="今天，我搭建了自己的个人博客。从创建仓库，到编写首页，再到成功上线，我第一次把自己写的网页发布到了互联网上。 我想记录什么？ 学习中的发现、生活中的思考，以及探索新事物的经历。" data-title="你好，世界！" data-category="博客搭建" data-date="2026-11-11">
 <div class="card-top"><time datetime="2026-11-11">2026.11.11</time><span>博客搭建</span></div>
 <h3><a href="{{ '/posts/hello-world.html' | relative_url }}">你好，世界！</a></h3><p>这是我的第一篇博客，也是最初的 HTML 练习。</p><a class="read-link" href="{{ '/posts/hello-world.html' | relative_url }}">阅读全文 ↗</a>
 </article>

@@ -60,3 +60,9 @@
 @media (max-width: 360px) {
   .filter-panel .filter-fields, .date-range { grid-template-columns: minmax(0, 1fr); }
 }
+.post-card mark {
+  color: var(--blue);
+  background: var(--soft);
+  border-radius: 0.15em;
+  overflow-wrap: anywhere;
+}
