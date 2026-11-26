@@ -1,0 +1,55 @@
+.appearance-controls { display: flex; align-items: center; gap: 4px; }
+#style-choice {
+  min-height: 44px;
+  padding-inline: 5px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+#style-choice option { background: var(--surface); color: var(--ink); }
+@media (max-width: 700px) {
+  .header-actions { column-gap: 6px; }
+  .appearance-controls { margin-inline-start: auto; }
+}
+@media (max-width: 380px) {
+  .header-actions nav { width: auto; gap: 12px; }
+}
+
+:root[data-style="humanities"] {
+  --paper: #f6f3ea;
+  --surface: #fffcf4;
+  --header: #f6f3ea;
+  --ink: #302e28;
+  --muted: #66665a;
+  --blue: #52643e;
+  --hover: #344826;
+  --button: #4c5c3e;
+  --line: #d1cdbf;
+  --soft: #e9eadc;
+  --quote: #4c573f;
+  --code: #edeadf;
+  --literary-serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia, serif;
+}
+:root[data-style="humanities"][data-theme="dark"] {
+  --paper: #242520;
+  --surface: #292a25;
+  --header: #242520;
+  --ink: #e9e4d6;
+  --muted: #b8b5a8;
+  --blue: #b6c49e;
+  --hover: #d3dfbd;
+  --button: #536441;
+  --line: #494a40;
+  --soft: #363b30;
+  --quote: #c2c9b1;
+  --code: #20221d;
+}
+[data-style="humanities"] :is(h1,h2,h3,.brand,.prose) { font-family: var(--literary-serif); }
+[data-style="humanities"] .brand-mark { border-radius: 3px; }
+[data-style="humanities"] .reading { background: transparent; border-color: transparent; }
+[data-style="humanities"] .prose { line-height: 2; }
+[data-style="humanities"] .prose blockquote { border-left-width: 2px; }
+[data-style="humanities"] :focus-visible { outline-color: var(--blue); }

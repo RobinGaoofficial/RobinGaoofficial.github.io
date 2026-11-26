@@ -1,0 +1,56 @@
+.humanities-only { display: none; }
+[data-style="humanities"] :is(.hero .tech-only,.planet-art) { display: none; }
+[data-style="humanities"] .humanities-only { display: block; }
+[data-style="humanities"] .hero {
+  grid-template-columns: minmax(0,1fr) minmax(130px,22%);
+  min-height: 0;
+  gap: 20px;
+  padding-block: clamp(46px,6vw,84px);
+}
+[data-style="humanities"] .hero h1 {
+  font-weight: 500;
+  font-size: clamp(32px,4.25vw,56px);
+  letter-spacing: .01em;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+[data-style="humanities"] .hero h1 span { display: inline-block; }
+.botanical { width: 100%; max-width: 195px; justify-self: center; color: var(--blue); }
+[data-style="humanities"] .hero .button {
+  padding: 2px 0;
+  gap: 12px;
+  color: var(--blue);
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid currentColor;
+}
+[data-style="humanities"] .section-heading { border-top: 2px solid var(--ink); }
+[data-style="humanities"] .post-grid { grid-template-columns: 1fr; gap: 0; }
+[data-style="humanities"] .post-card {
+  display: grid;
+  grid-template-columns: 8rem minmax(0,1fr);
+  gap: 6px 24px;
+  padding: 24px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  transform: none;
+}
+[data-style="humanities"] .card-top {
+  grid-row: 1 / span 3;
+  align-self: start;
+  flex-direction: column;
+  gap: 3px;
+  font-variant-numeric: tabular-nums;
+}
+[data-style="humanities"] .post-card :is(h3,p) { margin: 0; }
+[data-style="humanities"] .read-link { justify-self: start; }
+@media (max-width: 700px) {
+  [data-style="humanities"] .hero { position: relative; display: block; padding-block: 38px; }
+  [data-style="humanities"] .hero h1 { max-width: 11em; }
+  [data-style="humanities"] .hero-description { max-width: calc(100% - 78px); }
+  .botanical { position: absolute; bottom: 32px; right: 0; width: 74px; pointer-events: none; }
+  [data-style="humanities"] .post-card { grid-template-columns: 1fr; padding-block: 20px; }
+  [data-style="humanities"] .card-top { grid-row: auto; flex-direction: row; justify-content: start; gap: 12px; }
+}

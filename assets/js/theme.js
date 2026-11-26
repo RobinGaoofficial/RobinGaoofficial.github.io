@@ -78,6 +78,7 @@
   });
 
   function bind() {
+    bindStyleChoice();
     button = document.querySelector('#theme-toggle');
     if (!button) return;
 
@@ -155,6 +156,41 @@
       setPreference(event.shiftKey ? 'system' : currentTheme() === 'dark' ? 'light' : 'dark');
     });
 
+  }
+
+  function bindStyleChoice() {
+    const choice = document.getElementById('style-choice');
+    if (!choice) return;
+    const root = document.documentElement;
+    choice.value = root.dataset.style || 'tech';
+    choice.hidden = false;
+
+    function switchStyle(value) {
+      const style = value === 'humanities' ? value : 'tech';
+      choice.value = style;
+      if ((root.dataset.style || 'tech') === style) return;
+
+      // Follow the same passage or result card when the new typography reflows.
+      const visible = document.querySelectorAll('.prose > *, .post-card:not([hidden]), .post-interactions, .archive-list li');
+      const anchor = Array.from(visible).find(node => {
+        const box = node.getBoundingClientRect();
+        return box.bottom > 0 && box.top < innerHeight;
+      });
+      const before = anchor?.getBoundingClientRect();
+      root.dataset.style = style;
+      if (before && window.scrollY > 0) {
+        const after = anchor.getBoundingClientRect();
+        const fraction = before.height ? Math.max(0, -before.top / before.height) : 0;
+        scrollBy({ top: after.top - before.top + fraction * (after.height - before.height), behavior: 'instant' });
+      }
+    }
+    choice.addEventListener('change', () => {
+      switchStyle(choice.value);
+      try { localStorage.setItem('blog-style', choice.value); } catch (_) {}
+    });
+    window.addEventListener('storage', event => {
+      if (event.key === 'blog-style' || event.key === null) switchStyle(event.newValue);
+    });
   }
 
   if (document.readyState === 'loading') {

@@ -2,8 +2,9 @@
 layout: default
 ---
 <section class="hero">
-<div><p class="eyebrow">高彬斌的笔记</p><h1>保持好奇，<br><span>活在想象之外</span></h1><p class="hero-description">记录学习中的发现、生活中的思考，<br>以及探索新事物的经历。</p><a class="button" href="#notes">读一篇笔记 <span aria-hidden="true">↘</span></a></div>
+<div><p class="eyebrow">高彬斌的笔记</p><h1 class="tech-only">保持好奇，<br><span>活在想象之外</span></h1><h1 class="humanities-only">保持思考，<wbr><span>活在喧嚣之外</span></h1><p class="hero-description">记录学习中的发现、生活中的思考，<br>以及探索新事物的经历。</p><a class="button" href="#notes">读一篇笔记 <span aria-hidden="true">↘</span></a></div>
 {% include planet.html %}
+{% include botanical.html %}
 </section>
 <section id="notes" class="notes-section">
 <div class="section-heading"><div><p class="eyebrow">THE LATEST</p><h2>最近的记录<span class="count">{{ site.posts.size | plus: 1 }}</span></h2></div><a href="{{ '/archive.html' | relative_url }}">全部归档 ↗</a></div>

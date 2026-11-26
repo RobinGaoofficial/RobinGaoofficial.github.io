@@ -8,7 +8,9 @@
 <script>
 try {
   const theme = localStorage.getItem('blog-theme');
-  if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+  document.documentElement.dataset.theme = theme === 'light' || theme === 'dark'
+    ? theme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  if (localStorage.getItem('blog-style') === 'humanities') document.documentElement.dataset.style = 'humanities';
 } catch (_) {}
 </script>
 {% if page.url == '/' %}{% assign stylesheet = '/assets/css/home.css' %}{% else %}{% assign stylesheet = '/assets/css/site.css' %}{% endif %}
@@ -39,6 +41,11 @@ try {
 <a href="{{ '/about.html' | relative_url }}" {% if page.url == '/about.html' %}aria-current="page"{% endif %}>关于</a>
 </nav>
 
+<div class="appearance-controls">
+<select id="style-choice" aria-label="网站风格" hidden>
+  <option value="tech">科技</option>
+  <option value="humanities">人文</option>
+</select>
 <button
   id="theme-toggle"
   class="theme-toggle"
@@ -76,7 +83,7 @@ try {
   <svg class="theme-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M6.5 18a4.5 4.5 0 0 1-.4-9 6 6 0 0 1 11.5-.8A5 5 0 1 1 18 18Z"/></svg>
 </button>
 
-</div></div></header>
+</div></div></div></header>
 <main id="content" class="site-main">{{ content }}</main>
 <footer class="site-footer"><span class="footer-copyright">©2026-至今 高彬斌</span><span class="footer-motto">活在想象之外</span><div class="footer-links"><a href="{{ '/feed.xml' | relative_url }}">RSS 订阅</a><a href="{{ '/content-use.html' | relative_url }}">内容使用说明</a><a class="footer-contact" href="mailto:contact@gaobinbin.dev">联系与支持 · contact@gaobinbin.dev</a></div></footer>
 {% if page.layout == 'post' %}<script src="{{ '/assets/js/reading.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{% endif %}
