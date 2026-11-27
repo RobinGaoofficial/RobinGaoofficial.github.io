@@ -1,6 +1,38 @@
 (() => {
   const prose = document.querySelector('.prose');
   if (!prose) return;
+
+  // A pixel offset belongs to the old typesetting. Keep a passage reference
+  // for history restores that change the article's style while it is away.
+  window.addEventListener('pagehide', () => {
+    const blocks = Array.from(prose.children);
+    const index = blocks.findIndex(el => el.getBoundingClientRect().bottom > 0);
+    const box = blocks[index]?.getBoundingClientRect();
+    const passage = scrollY > 0 && box?.height && box.top < innerHeight
+      ? {index, style: document.documentElement.dataset.style, top: Math.max(0, box.top),
+        fraction: Math.max(0, -box.top / box.height)} : null;
+    try { history.replaceState({...history.state, blogPassage: passage}, ''); } catch (_) {}
+  });
+
+  window.addEventListener('pageshow', () => {
+    const saved = history.state?.blogPassage;
+    if (!saved || saved.style === document.documentElement.dataset.style) return;
+    const block = prose.children[saved.index];
+    if (!block) return;
+    const stop = new AbortController();
+    for (const event of ['wheel','pointerdown','touchstart','keydown','pagehide','hashchange']) {
+      window.addEventListener(event, () => stop.abort(), {once:true, passive:true, signal:stop.signal});
+    }
+    function align() {
+      if (stop.signal.aborted) return;
+      const box = block.getBoundingClientRect();
+      scrollBy({top: box.top + saved.fraction * box.height - saved.top, behavior:'instant'});
+    }
+    requestAnimationFrame(() => {
+      align();
+      document.fonts.ready.then(() => requestAnimationFrame(() => { align(); stop.abort(); }));
+    });
+  });
   for (const paragraph of prose.querySelectorAll(':scope > p + p')) {
     const text = paragraph.textContent.trim();
     if (/^[“‘「『（《〈【]*\p{Script=Han}/u.test(text) &&
