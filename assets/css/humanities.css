@@ -34,7 +34,6 @@
   --soft: #e9eadc;
   --quote: #4c573f;
   --code: #edeadf;
-  --literary-serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia, serif;
 }
 :root[data-style="humanities"][data-theme="dark"] {
   --paper: #242520;
@@ -50,9 +49,7 @@
   --quote: #c2c9b1;
   --code: #20221d;
 }
-[data-style="humanities"] :is(h1,h2,h3,.brand,.prose) { font-family: var(--literary-serif); }
 [data-style="humanities"] .brand-mark { border-radius: 3px; }
 [data-style="humanities"] .reading { background: transparent; border-color: transparent; }
-[data-style="humanities"] .prose { line-height: 2; }
 [data-style="humanities"] .prose blockquote { border-left-width: 2px; }
 [data-style="humanities"] :focus-visible { outline-color: var(--blue); }

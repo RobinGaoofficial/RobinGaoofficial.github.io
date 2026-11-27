@@ -6,7 +6,7 @@
   padding-block: clamp(46px,6vw,84px);
 }
 [data-style="humanities"] .hero h1 {
-  font-weight: 500;
+  font-weight: 400;
   font-size: clamp(32px,4.25vw,56px);
   letter-spacing: .01em;
   line-height: 1.4;

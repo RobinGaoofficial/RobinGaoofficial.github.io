@@ -1,0 +1,33 @@
+:root {
+  --ui-font: "Robin Sans SC", "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --reading-font: var(--ui-font);
+  --reading-size: 17px;
+  --reading-leading: 1.8;
+  --reading-spacing: .02em;
+}
+:root[data-style="humanities"] {
+  --reading-font: "Robin Serif SC", "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "SimSun", Georgia, serif;
+  --reading-size: 18px;
+  --reading-leading: 1.95;
+  --reading-spacing: .04em;
+}
+body, input, select, textarea, button { font-family: var(--ui-font); }
+:is(h1,h2,h3,h4,h5,h6), .post-card > p, .prose { font-family: var(--reading-font); }
+.prose {
+  font-size: var(--reading-size);
+  font-weight: 400;
+  line-height: var(--reading-leading);
+  letter-spacing: var(--reading-spacing);
+}
+.prose :is(pre,code,kbd,samp) {
+  font-family: Consolas, monospace;
+  letter-spacing: normal;
+}
+.prose :is(.code-toolbar,button,input,select,textarea), .post-interactions :is(h2,h3) {
+  font-family: var(--ui-font);
+  letter-spacing: normal;
+}
+@media (max-width: 700px) {
+  :root { --reading-size: 16px; }
+  :root[data-style="humanities"] { --reading-size: 17px; }
+}
