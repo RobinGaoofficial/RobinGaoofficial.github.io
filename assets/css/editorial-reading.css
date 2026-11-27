@@ -1,0 +1,29 @@
+/* Book pages and collection indexes share the same paper, rules and text measure. */
+[data-style="humanities"] .book-article { max-width: 720px; }
+[data-style="humanities"] .book-article .reading { --reading-inset: 0px; padding-inline: 0; border: 0; }
+[data-style="humanities"] .book-article .post-header { text-align: center; padding: clamp(8px,3vw,32px) 0 clamp(24px,4vw,52px); margin-bottom: 2em; }
+[data-style="humanities"] .book-article .post-header h1 { font-size: clamp(32px,4.2vw,54px); line-height: 1.4; }
+[data-style="humanities"] .book-article .meta { justify-content: center; }
+[data-style="humanities"] .book-article .tag { background: none; padding: 0; }
+[data-style="humanities"] .book-article .prose { text-align: start; }
+[data-style="humanities"] .book-article .prose > p + p.book-paragraph { text-indent: 2em; }
+[data-style="humanities"] .book-article .prose h2 { margin: 2.2em 0 .6em; border-top: 1px solid var(--line); padding-top: .85em; }
+[data-style="humanities"] .book-article .prose h3 { margin: 1.6em 0 .5em; }
+[data-style="humanities"] .book-article .prose blockquote { background: none; border-left: 2px solid var(--blue); margin: 1.8em 0; padding: 0 1.25em; }
+[data-style="humanities"] .book-article figcaption,
+[data-style="humanities"] .image-caption { color: var(--muted); font: 14px/1.7 var(--ui-font); text-align: center; }
+[data-style="humanities"] .book-article figure { margin: 1.75em 0; }
+[data-style="humanities"] .book-article .article-toc button { border-width: 0 0 1px; border-radius: 0; padding-inline: 0; background: none; }
+[data-style="humanities"] .book-article .article-actions { padding-top: 1.5em; }
+[data-style="humanities"] .book-article .article-action { border-radius: 0; background: none; }
+[data-style="humanities"] .book-article .post-navigation { border-top: 1px solid var(--line); padding-top: 1.25em; }
+[data-style="humanities"] .page-content:has(.archive-group) { max-width: 860px; }
+[data-style="humanities"] .page-content:has(.archive-group) .page-heading { text-align: center; padding-block: 1.2em; }
+[data-style="humanities"] .archive-group { display: grid; grid-template-columns: minmax(7em,1fr) minmax(0,3fr); column-gap: 2em; border-top: 1px solid var(--line); }
+[data-style="humanities"] .archive-group h2 { font-weight: 400; line-height: 1.5; }
+[data-style="humanities"] .archive-list a { font-family: var(--reading-font); color: var(--ink); }
+[data-style="humanities"] .archive-list time { min-width: 6em; font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) {
+  [data-style="humanities"] .site-main:has(> .book-article) { padding-inline: 18px; }
+  [data-style="humanities"] .archive-group { display: block; }
+}

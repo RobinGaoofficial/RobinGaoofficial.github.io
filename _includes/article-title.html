@@ -1,0 +1,7 @@
+<header class="post-header">
+<p class="eyebrow tech-only">NOTES & IDEAS</p>
+<h1>{{ page.title | escape }}</h1>
+<div class="meta">{% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>{% endif %}
+{% for category in page.categories %}<a class="tag" href="{{ '/categories.html' | relative_url }}#{{ category | uri_escape }}">{{ category | escape }}</a>{% endfor %}
+{% if page.collection == 'posts' and site.waline.server_url and site.waline.server_url != '' %}<span class="post-views">阅读 <span data-view-count>—</span></span>{% endif %}</div>
+</header>

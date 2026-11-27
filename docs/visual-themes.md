@@ -1,14 +1,12 @@
-# 博客视觉主题
+# 网站风格与文章推荐
 
-导航中的「科技／人文」选择器控制页面风格，太阳／月亮控制配色。默认显示科技风格，明暗跟随系统。两个偏好分别使用本机的 `blog-style` 和 `blog-theme`。清除站点数据后恢复默认。
+导航中的风格菜单提供自动、科技和人文。太阳／月亮控制明暗。首次进入首页使用科技风格。读者直接打开文章时，自动模式使用文章推荐；从站内进入另一篇时延续当前风格。手动选择锁定风格，选择「自动（按文章）」恢复推荐。
 
-## 维护
+在 Markdown 的 Front Matter 中可选填 `theme: technology`、`theme: humanities` 或 `theme: auto`。已有文章无需修改。分类优先于标签，同一层按匹配项较多的一方决定，分类持平时再看标签。词表在 `_data/article_styles.yml`，词条采用不区分英文大小写的完整匹配。无明确推荐时使用科技风格。
 
-- 公共布局的内联脚本在样式表加载前读取偏好。风格使用根元素的 `data-style`，明暗使用 `data-theme`。新增选项时，同步更新首屏脚本和 `assets/js/theme.js`。菜单使用浏览器原生选择器。
-- 人文主题公共样式在 `assets/css/humanities.css`，首页专用样式在 `assets/css/humanities-home.css`。修改人文组件时，将规则限定在该风格或其专属元素。两个文件由现有 Jekyll 样式包按页面类型合并。
-- 两句刊头都在首页模板，植物线稿在 `_includes/botanical.html`。日期、标题、摘要和链接来自同一张文章卡片。编辑文章、发布 Markdown 或维护 Waline 时继续使用原有入口。
-- 修改脚本后运行 `npm test`。验证首次访问、刷新、风格和明暗的四种组合，检查手机导航、正文目录、搜索分页和未提交的评论。
+## 维护与回滚
 
-## 回滚
-
-实施前的本地分支为 `backup/pre-dual-theme-20261126-233847`，对应提交 `d42cb4b`。可用 `git diff backup/pre-dual-theme-20261126-233847 -- <路径>` 对照原文件。线上回滚时在干净的工作区用 `git revert <双主题提交号>` 新建回滚提交，测试后推送 Pages 部署分支。仓库外另存有实施前的本地文件快照，可按需取回未提交的笔记、图片及 Obsidian 配置。
+- 构建时由 `_includes/article-style.html` 输出推荐值。首屏脚本优先读取手动偏好、历史条目、站内跳转来源，再使用推荐值。手动偏好和明暗偏好分别使用 `blog-style` 与 `blog-theme`。站内同标签跳转在 sessionStorage 里保存一次性的目标和风格，复制或分享原有文章链接即可。
+- 人文首页扉页在 `_includes/editorial-cover.html`，首页样式在 `assets/css/humanities-home.css`。卷首使用当前页第一篇，搜索时复用现有列表。文章标题模板在 `_includes/article-title.html`，文章和文集目录排版在 `assets/css/editorial-reading.css`。每页共用一份正文和互动控件。
+- 修改脚本后运行 `npm test`。分别检查桌面和手机的风格、明暗、直达和站内浏览。
+- 此次改版前的本地备份分支为 `codex/backup-before-editorial-baf8623`。可通过 `git diff` 对照，线上回滚可在干净工作区 revert 此次发布提交，再运行测试与发布。

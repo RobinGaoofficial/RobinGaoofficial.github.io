@@ -1,6 +1,13 @@
 (() => {
   const prose = document.querySelector('.prose');
   if (!prose) return;
+  for (const paragraph of prose.querySelectorAll(':scope > p + p')) {
+    const text = paragraph.textContent.trim();
+    if (/^[“‘「『（《〈【]*\p{Script=Han}/u.test(text) &&
+        !paragraph.querySelector('img, picture, video, math, mjx-container, .MathJax, .katex, .math, script[type^="math/tex"]')) {
+      paragraph.classList.add('book-paragraph');
+    }
+  }
 
   // Native anchors keep the directory useful with keyboard navigation and history.
   const headings = Array.from(prose.querySelectorAll('h2, h3'));

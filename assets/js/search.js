@@ -21,6 +21,30 @@
   const rangeFields = document.querySelector('#range-fields');
   const dateError = document.querySelector('#date-error');
   const grid = document.querySelector('.post-grid');
+  const section = grid.closest('#notes');
+  const searchEntry = document.getElementById('editorial-search');
+  let returnY = null;
+  let returnPage = 1;
+  function openSearch(open) {
+    section.classList.toggle('search-open', open);
+    searchEntry.setAttribute('aria-expanded', String(open));
+    searchEntry.textContent = open ? '退出搜索' : '搜索文章';
+  }
+  searchEntry.addEventListener('click', () => {
+    if (!section.classList.contains('search-open')) {
+      returnY = window.scrollY;
+      returnPage = page;
+      openSearch(true);
+      input.focus();
+    } else {
+      restoreFilters(window.PostBrowser.normalizeFilters({}));
+      page = returnPage;
+      openSearch(false);
+      render();
+      if (returnY !== null) window.scrollTo({top: returnY, behavior: 'instant'});
+      returnY = null;
+    }
+  });
   const posts = cards.map(card => {
     const summary = card.querySelector('p');
     return { card, summary, excerpt: summary.textContent, heading: card.querySelector('h3 a'),
@@ -114,7 +138,7 @@
     if (page > 1) url.searchParams.set('page', String(page));
     else url.searchParams.delete('page');
     if (url.hash.startsWith('#result=')) url.hash = 'notes';
-    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    window.history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
   }
 
   function updateFilterSummary(criteria) {
@@ -155,10 +179,16 @@
     }
     page = paged.page;
     const visible = new Set(paged.items.map(post => post.card));
+    grid.classList.toggle('has-recent', paged.items.length > 1);
+    grid.style.setProperty('--recent-rows', Math.max(1, paged.items.length - 1));
+    cards.forEach(card => card.classList.remove('lead-article','first-recent'));
+    paged.items[0]?.card.classList.add('lead-article');
+    paged.items[1]?.card.classList.add('first-recent');
     cards.forEach(card => { card.hidden = !visible.has(card); });
     // DOM order must match the sorted results, not just their visibility.
     results.forEach(post => grid.append(post.card));
     const hasConditions = Boolean(criteria.keyword) || window.PostBrowser.activeFilterCount(criteria) > 0 || criteria.sort !== 'newest';
+    if (hasConditions) openSearch(true);
     status.hidden = !hasConditions;
     status.textContent = hasConditions ? `找到 ${results.length} 篇文章${results.length ? `，第 ${page} / ${paged.totalPages} 页` : ''}` : '';
     empty.hidden = results.length !== 0;
@@ -212,6 +242,7 @@
     render();
   });
   function restoreList() {
+    openSearch(false);
     const criteria = window.PostBrowser.normalizeFilters(window.PostBrowser.filtersFromSearch(window.location.search));
     restoreFilters(criteria);
     page = pageFromUrl();

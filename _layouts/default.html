@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-recommended="{% include article-style.html %}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,8 +10,8 @@ try {
   const theme = localStorage.getItem('blog-theme');
   document.documentElement.dataset.theme = theme === 'light' || theme === 'dark'
     ? theme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  if (localStorage.getItem('blog-style') === 'humanities') document.documentElement.dataset.style = 'humanities';
 } catch (_) {}
+{% include style-start.js %}
 </script>
 {% if page.url == '/' %}{% assign stylesheet = '/assets/css/home.css' %}{% else %}{% assign stylesheet = '/assets/css/site.css' %}{% endif %}
 <link rel="stylesheet" href="{{ stylesheet | relative_url }}?v={{ site.time | date: '%s' }}">
@@ -45,6 +45,7 @@ try {
 
 <div class="appearance-controls">
 <select id="style-choice" aria-label="网站风格" hidden>
+  <option value="auto">自动</option>
   <option value="tech">科技</option>
   <option value="humanities">人文</option>
 </select>

@@ -162,12 +162,20 @@
     const choice = document.getElementById('style-choice');
     if (!choice) return;
     const root = document.documentElement;
-    choice.value = root.dataset.style || 'tech';
+    function preference() {
+      try { return localStorage.getItem('blog-style'); } catch (_) { return null; }
+    }
+    function updateMenu(manual) {
+      const auto = choice.querySelector('[value="auto"]');
+      auto.textContent = manual ? '自动（按文章）' :
+        (root.dataset.style === 'humanities' ? '人文 · 自动' : '科技 · 自动');
+      choice.value = manual || 'auto';
+    }
+    updateMenu(preference());
     choice.hidden = false;
 
     function switchStyle(value) {
       const style = value === 'humanities' ? value : 'tech';
-      choice.value = style;
       if ((root.dataset.style || 'tech') === style) return;
 
       // Follow the same passage or result card when the new typography reflows.
@@ -183,13 +191,29 @@
         const fraction = before.height ? Math.max(0, -before.top / before.height) : 0;
         scrollBy({ top: after.top - before.top + fraction * (after.height - before.height), behavior: 'instant' });
       }
+      document.dispatchEvent(new Event('blog-style-change'));
     }
     choice.addEventListener('change', () => {
-      switchStyle(choice.value);
-      try { localStorage.setItem('blog-style', choice.value); } catch (_) {}
+      const manual = choice.value === 'auto' ? null : choice.value;
+      try {
+        if (manual) localStorage.setItem('blog-style', manual);
+        else localStorage.removeItem('blog-style');
+      } catch (_) {}
+      switchStyle(manual || root.dataset.recommended);
+      updateMenu(manual);
     });
     window.addEventListener('storage', event => {
-      if (event.key === 'blog-style' || event.key === null) switchStyle(event.newValue);
+      if (event.key === 'blog-style' || event.key === null) {
+        const manual = preference();
+        switchStyle(manual || root.dataset.recommended);
+        updateMenu(manual);
+      }
+    });
+    window.addEventListener('pageshow', event => {
+      if (!event.persisted) return;
+      const manual = preference();
+      if (manual) switchStyle(manual);
+      updateMenu(manual);
     });
   }
 

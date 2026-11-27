@@ -1,0 +1,28 @@
+{%- assign recommendation = 'tech' -%}
+{%- if page.layout == 'post' -%}
+  {%- if page.theme == 'humanities' -%}
+    {%- assign recommendation = 'humanities' -%}
+  {%- elsif page.theme != 'technology' -%}
+    {%- assign fields = 'categories,tags' | split: ',' -%}
+    {%- for field in fields -%}
+      {%- assign literary = 0 -%}
+      {%- assign technical = 0 -%}
+      {%- assign labels = page[field] | uniq -%}
+      {%- for label in labels -%}
+        {%- assign key = label | strip | downcase -%}
+        {%- if site.data.article_styles.humanities contains key -%}
+          {%- assign literary = literary | plus: 1 -%}
+        {%- elsif site.data.article_styles.technology contains key -%}
+          {%- assign technical = technical | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if literary > technical -%}
+        {%- assign recommendation = 'humanities' -%}
+        {%- break -%}
+      {%- elsif technical > literary -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}
+{{- recommendation -}}
