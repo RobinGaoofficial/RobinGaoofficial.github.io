@@ -6,11 +6,12 @@
 <title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
 {% include share-meta.html %}
 <script>
-try {
-  const theme = localStorage.getItem('blog-theme');
+{
+  let theme;
+  try { theme = localStorage.getItem('blog-theme'); } catch (_) {}
   document.documentElement.dataset.theme = theme === 'light' || theme === 'dark'
     ? theme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-} catch (_) {}
+}
 {% include style-start.js %}
 </script>
 {% if page.url == '/' %}{% assign stylesheet = '/assets/css/home.css' %}{% else %}{% assign stylesheet = '/assets/css/site.css' %}{% endif %}

@@ -16,12 +16,15 @@
   const fromPrevious = previous && referrer && referrer.origin === location.origin &&
     referrer.pathname === previous.path;
   const inherited = internal ? pending.style : fromPrevious ? previous.style : null;
-  root.dataset.style = [manual, history.state?.blogStyle, inherited, root.dataset.recommended]
+  const historical = history.state?.blogStyleSource === 'manual'
+    ? root.dataset.recommended : history.state?.blogStyle;
+  root.dataset.style = [manual, historical, inherited, root.dataset.recommended]
     .find(valid) || 'tech';
+  root.dataset.styleSource = valid(manual) ? 'manual' : 'auto';
 
   function remember() {
     const style = root.dataset.style;
-    try { history.replaceState({ ...history.state, blogStyle: style }, ''); } catch (_) {}
+    try { history.replaceState({ ...history.state, blogStyle: style, blogStyleSource: root.dataset.styleSource }, ''); } catch (_) {}
     try { sessionStorage.setItem('blog-current-style', JSON.stringify({path: location.pathname, style})); } catch (_) {}
   }
   remember();

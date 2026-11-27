@@ -191,7 +191,16 @@
         const fraction = before.height ? Math.max(0, -before.top / before.height) : 0;
         scrollBy({ top: after.top - before.top + fraction * (after.height - before.height), behavior: 'instant' });
       }
+    }
+    function applyChoice(manual, autoStyle) {
+      switchStyle(manual || autoStyle);
+      root.dataset.styleSource = manual ? 'manual' : 'auto';
       document.dispatchEvent(new Event('blog-style-change'));
+      updateMenu(manual);
+    }
+    function reconcile() {
+      const automatic = root.dataset.styleSource === 'manual' ? root.dataset.recommended : root.dataset.style;
+      applyChoice(preference(), automatic);
     }
     choice.addEventListener('change', () => {
       const manual = choice.value === 'auto' ? null : choice.value;
@@ -199,21 +208,16 @@
         if (manual) localStorage.setItem('blog-style', manual);
         else localStorage.removeItem('blog-style');
       } catch (_) {}
-      switchStyle(manual || root.dataset.recommended);
-      updateMenu(manual);
+      applyChoice(manual, root.dataset.recommended);
     });
     window.addEventListener('storage', event => {
       if (event.key === 'blog-style' || event.key === null) {
-        const manual = preference();
-        switchStyle(manual || root.dataset.recommended);
-        updateMenu(manual);
+        reconcile();
       }
     });
     window.addEventListener('pageshow', event => {
       if (!event.persisted) return;
-      const manual = preference();
-      if (manual) switchStyle(manual);
-      updateMenu(manual);
+      reconcile();
     });
   }
 
