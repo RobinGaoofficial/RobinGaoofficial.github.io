@@ -7,5 +7,4 @@ layout: null
 {% include_relative planet.css %}
 {% include_relative humanities.css %}
 {% include_relative humanities-home.css %}
-{% include_relative font-faces.css %}
 {% include_relative typography.css %}
