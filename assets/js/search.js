@@ -268,6 +268,7 @@
   });
 
   restoreList();
+  searchEntry.disabled = false;
   window.addEventListener('pageshow', event => {
     if (!event.persisted) requestAnimationFrame(restoreCard);
   });

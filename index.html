@@ -8,7 +8,7 @@ layout: default
 {% include editorial-cover.html %}
 <section id="notes" class="notes-section">
 <div class="section-heading tech-only"><div><p class="eyebrow">THE LATEST</p><h2>最近的记录<span class="count">{{ site.posts.size | plus: 1 }}</span></h2></div><a href="{{ '/archive.html' | relative_url }}">全部归档 ↗</a></div>
-<div class="humanities-only editorial-tools"><a href="{{ '/archive.html' | relative_url }}">文章归档 ↗</a><button type="button" id="editorial-search" aria-expanded="false" aria-controls="article-search">搜索文章</button></div>
+<div class="humanities-only editorial-tools"><a href="{{ '/archive.html' | relative_url }}">文章归档 ↗</a><button type="button" id="editorial-search" disabled aria-expanded="false" aria-controls="article-search">搜索文章</button></div>
 <div class="search-bar" id="article-search" role="search" aria-label="文章搜索与筛选">
   <div class="search-row">
     <label class="sr-only" for="search">搜索文章</label>
