@@ -43,7 +43,9 @@ layout: default
 <article class="post-card" data-search="{{ post.content | strip_html | normalize_whitespace | escape }}" data-title="{{ post.title | escape }}" data-category="{{ post.categories | first | default: '随笔' | escape }}" data-date="{{ post.date | date: '%Y-%m-%d' }}">
 <div class="card-top"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time><span>{{ post.categories | first | default: '随笔' | escape }}</span></div>
 <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
-<p>{{ post.excerpt | strip_html | truncate: 120 | escape }}</p><a class="read-link" href="{{ post.url | relative_url }}">阅读全文 <span aria-hidden="true">↗</span></a>
+<p class="standard-summary">{{ post.excerpt | strip_html | truncate: 120 | escape }}</p>
+<p class="lead-summary">{{ post.excerpt | strip_html | normalize_whitespace | strip | truncate: 180, '…' | escape }}</p>
+<a class="read-link" href="{{ post.url | relative_url }}">阅读全文 <span aria-hidden="true">↗</span></a>
 </article>
 {% endfor %}
 <article class="post-card" data-search="今天，我搭建了自己的个人博客。从创建仓库，到编写首页，再到成功上线，我第一次把自己写的网页发布到了互联网上。 我想记录什么？ 学习中的发现、生活中的思考，以及探索新事物的经历。" data-title="你好，世界！" data-category="博客搭建" data-date="2026-11-11">

@@ -1,11 +1,14 @@
 [data-style="humanities"] .editorial-cover {
   position: relative;
   text-align: center;
-  padding: clamp(50px,7vw,98px) 0 clamp(32px,4vw,56px);
+  padding: clamp(22px,4.5vw,60px) 0 clamp(15px,2.4vw,34px);
 }
-.editorial-cover h1 { margin: 0; font-size: clamp(32px,4.3vw,62px); line-height: 1.45; font-weight: 400; letter-spacing: .035em; }
+.editorial-cover h1 { margin: 0; font-size: clamp(52px,4vw,56px); line-height: 1.45; font-weight: 400; letter-spacing: .035em; }
 .editorial-cover h1 span { display: inline-block; }
-.editorial-cover .botanical { width: 52px; height: 48px; margin: 16px auto 0; color: var(--blue); }
+.editorial-cover .botanical { width: 52px; height: 48px; margin: 8px auto 0; color: var(--blue); }
+@media (max-width: 759px) {
+  .editorial-cover h1 { font-size: clamp(30px,8vw,34px); }
+}
 [data-style="humanities"] .editorial-tools { display: flex; justify-content: space-between; align-items: center; border-block: 1px solid var(--line); }
 .editorial-tools a,.editorial-tools button { color: var(--muted); font: inherit; font-size: 14px; text-decoration: none; padding: 12px 0; }
 .editorial-tools button { border: 0; background: transparent; }
@@ -17,12 +20,26 @@
 [data-style="humanities"] .post-card > p { margin: 0 0 12px; }
 [data-style="humanities"] .read-link { margin-top: 0; }
 [data-style="humanities"] #notes:not(.search-open) .lead-article::before,
-[data-style="humanities"] #notes:not(.search-open) .first-recent::before { display:block; font: 600 13px/1.8 var(--ui-font); letter-spacing: .12em; color: var(--blue); margin-bottom: 24px; }
+[data-style="humanities"] #notes:not(.search-open) .first-recent::before { display:block; font: 600 13px/1.8 var(--ui-font); letter-spacing: .12em; color: var(--blue); margin-bottom: 12px; }
 [data-style="humanities"] #notes:not(.search-open) .lead-article::before { content: "卷首文章"; }
 [data-style="humanities"] #notes:not(.search-open) .first-recent::before { content: "近期文章"; }
-[data-style="humanities"] #notes:not(.search-open) .lead-article h3 { font-size: clamp(30px,3.5vw,48px); font-weight: 400; }
+.lead-summary { display: none; }
+[data-style="humanities"] #notes:not(.search-open) {
+  & .post-card { padding-block: 18px; }
+  & .post-card h3 { margin: 8px 0 0; font-size: clamp(22px,1.8vw,24px); }
+  & .lead-article h3 { font-size: clamp(28px,7.5vw,32px); font-weight: 400; }
+  & .post-card > p { margin: 8px 0 0; }
+  & .lead-article > p { font-size: 17px; }
+  & .lead-article .lead-summary { display: block; }
+  & .lead-article > .standard-summary, & .post-card > p:empty,
+  & .post-card:not(.lead-article) .read-link { display: none; }
+  & .lead-article .read-link { margin-top: 10px; }
+  & .post-card h3 a:is(:hover,:focus-visible) { text-decoration: underline; }
+}
 @media (min-width: 760px) {
-  [data-style="humanities"] #notes:not(.search-open) .post-grid.has-recent { grid-template-columns: minmax(0,3fr) minmax(0,2fr); column-gap: clamp(36px,5vw,76px); }
+  [data-style="humanities"] #notes:not(.search-open) .lead-article h3 { font-size: clamp(36px,3vw,40px); }
+  [data-style="humanities"] #notes:not(.search-open) .post-grid.has-recent { --gutter: clamp(36px,5vw,76px); position: relative; grid-template-columns: minmax(0,3fr) minmax(0,2fr); column-gap: var(--gutter); }
+  [data-style="humanities"] #notes:not(.search-open) .post-grid.has-recent::before { content: ""; position: absolute; grid-column: 1 / 2; inset-block: 0; inset-inline-end: calc(var(--gutter) / -2); width: 1px; background: var(--line); opacity: .65; pointer-events: none; }
   [data-style="humanities"] #notes:not(.search-open) .has-recent .post-card { grid-column: 2; }
   [data-style="humanities"] #notes:not(.search-open) .has-recent .lead-article { grid-column: 1; grid-row: 1 / span var(--recent-rows,1); align-self: start; border-bottom: 0; }
   [data-style="humanities"] #notes:not(.search-open) .post-grid:not(.has-recent) { max-width: 720px; margin-inline: auto; }
